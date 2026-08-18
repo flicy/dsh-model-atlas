@@ -47,14 +47,15 @@ a{color:inherit;text-decoration:none}
 .app-shell{min-height:100vh;height:100%;display:flex;position:relative}
 
 /* ========== Sidebar ========== */
-.sidebar{position:fixed;inset:0 auto 0 0;z-index:100;width:var(--sidebar-w);display:flex;flex-direction:column;background:var(--bg-dark);color:var(--ink-on-dark);transition:transform .3s var(--ease);overflow:hidden}
-.sidebar[data-collapsed="true"]{transform:translateX(calc(var(--sidebar-w)*-1))}
+.sidebar{position:fixed;inset:0 auto 0 0;z-index:100;width:var(--sidebar-w);display:flex;flex-direction:column;background:var(--bg-dark);color:var(--ink-on-dark);transition:transform .3s cubic-bezier(0.4,0,0.2,1);overflow:hidden;box-shadow:2px 0 12px rgba(0,0,0,0.08)}
+.sidebar[data-collapsed="true"]{transform:translateX(calc(var(--sidebar-w)*-1));box-shadow:none}
 .sidebar-inner{display:flex;flex-direction:column;height:100%;width:var(--sidebar-w);padding:0;overflow:hidden}
 
-/* Sidebar toggle button - floating */
-.sidebar-toggle{position:fixed;left:var(--sidebar-w);top:50%;z-index:101;width:24px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.1);border-left:none;border-radius:0 8px 8px 0;color:var(--ink-on-dark-secondary);cursor:pointer;transition:all .3s var(--ease);font-size:12px;transform:translateY(-50%)}
-.sidebar[data-collapsed="true"]~.sidebar-toggle{left:0}
-.sidebar-toggle:hover{color:var(--ink-on-dark);background:var(--bg-dark-card)}
+/* Sidebar toggle button - pinned to sidebar edge */
+.sidebar-toggle{position:fixed;left:var(--sidebar-w);top:50%;z-index:101;width:20px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.08);border-left:none;border-radius:0 10px 10px 0;color:var(--ink-on-dark-secondary);cursor:pointer;transition:all .3s cubic-bezier(0.4,0,0.2,1);font-size:10px;transform:translateY(-50%);opacity:0.7}
+.sidebar-toggle:hover{opacity:1;color:var(--ink-on-dark);background:var(--bg-dark-card);border-color:rgba(255,255,255,0.15);width:24px}
+.sidebar[data-collapsed="true"]~.sidebar-toggle{left:0;opacity:0.9}
+.sidebar[data-collapsed="true"]~.sidebar-toggle:hover{left:2px;opacity:1}
 
 /* Brand */
 .brand{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.06)}
@@ -95,7 +96,7 @@ a{color:inherit;text-decoration:none}
 .top-icon-btn svg{width:16px;fill:none;stroke:currentColor;stroke-width:1.6}
 
 /* ========== Main ========== */
-main{min-height:0;padding:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+main{min-height:0;padding:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden;min-height:0}
 
 /* ========== Intro ========== */
 .intro{position:relative;z-index:14;min-height:0;padding:24px 28px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-shrink:0;flex-wrap:wrap}
@@ -111,16 +112,16 @@ main{min-height:0;padding:0;display:grid;grid-template-rows:auto minmax(0,1fr);o
 .model-switcher button:hover{color:var(--ink)}
 
 /* ========== Workspace ========== */
-.workspace{min-width:0;min-height:0;margin:0 20px 20px;overflow:hidden;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);background:var(--bg-card);box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.workspace{min-width:0;min-height:0;max-height:100%;margin:0 20px 20px;overflow:hidden;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);background:var(--bg-card);box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
 .workspace-head{padding:20px 28px 16px;display:flex;align-items:end;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06);flex-shrink:0;flex-wrap:wrap}
 .step-label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
 .workspace-head h2{margin:0;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:var(--ink)}
 .workspace-head p{margin:4px 0 0;color:var(--ink-secondary);font-size:13px;line-height:1.5}
-.workspace-body{flex:1;overflow-y:auto;padding:24px 28px 28px;background:var(--bg-card)}
+.workspace-body{flex:1 1 auto;overflow-y:auto;min-height:0;padding:24px 28px 28px;background:var(--bg-card)}
 
 /* ========== Tab Content ========== */
-.tab-content{display:none}
-.tab-content.active{display:block}
+.tab-content{display:none;min-height:0}
+.tab-content.active{display:block;min-height:0}
 
 /* ========== Learning Mode vs Quick Reference ========== */
 .mode-learning{display:block}
@@ -269,11 +270,13 @@ body.dark .flow-content code{background:var(--bg-warm);color:var(--ink-on-dark)}
 
 /* ========== Responsive ========== */
 @media(max-width:760px){
-  .sidebar{width:100%;z-index:200}
+  .sidebar{width:100%;z-index:200;transform:translateX(-100%);box-shadow:24px 0 80px rgba(0,0,0,0.3)}
+  .sidebar[data-collapsed="false"]{transform:translateX(0)}
   .sidebar[data-collapsed="true"]{transform:translateX(-100%)}
   .sidebar-toggle{display:none}
   .page{margin-left:0!important}
   .topbar{height:57px;padding:0 16px}
+  .topbar .mobile-menu-btn{display:flex!important}
   .intro{padding:16px;flex-direction:column;align-items:stretch;gap:12px}
   .model-controls{justify-items:stretch;align-self:stretch}
   .model-switcher{width:100%}
@@ -352,6 +355,9 @@ body.dark .flow-content code{background:var(--bg-warm);color:var(--ink-on-dark)}
   </div>
 </aside>
 
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" style="display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.3);cursor:pointer"></div>
+
 <!-- Sidebar toggle button -->
 <button class="sidebar-toggle" id="sidebarToggle" aria-label="切换侧边栏">◀</button>
 
@@ -361,6 +367,9 @@ body.dark .flow-content code{background:var(--bg-warm);color:var(--ink-on-dark)}
   <!-- Topbar -->
   <header class="topbar">
     <div class="breadcrumb">
+      <button class="top-icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单" style="display:none;margin-right:4px">
+        <svg viewBox="0 0 24 24" style="width:18px"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+      </button>
       <a href="https://start.growthos.cn" target="_blank">GrowthOS</a>
       <span class="sep">/</span>
       <span class="current" id="breadcrumbCurrent">DSH Model Atlas</span>
@@ -648,7 +657,20 @@ models: [deepseek-v4-flash, qwen3.8-max,
 
       <!-- ==================== TAB: Plugins ==================== -->
       <div class="tab-content" id="tab-plugins">
-        <div class="workspace-head"><div><div class="step-label">Plugins</div><h2>DSH 插件生态全景分析</h2></div><p>基于 GitHub 官方社区数据，全面解析 DSH 插件生态</p></div>
+        <div class="workspace-head">
+          <div>
+            <div class="step-label">Plugins</div>
+            <h2>DSH 插件生态全景分析</h2>
+            <p>基于 GitHub 官方社区数据，全面解析 DSH 插件生态</p>
+          </div>
+          <div class="model-controls" style="align-self:flex-end">
+            <div class="model-switcher time-filter" role="tablist" aria-label="时间范围">
+              <button class="active" role="tab" aria-selected="true" data-period="daily">📅 日</button>
+              <button role="tab" aria-selected="false" data-period="weekly">📊 周</button>
+              <button role="tab" aria-selected="false" data-period="monthly">📈 月</button>
+            </div>
+          </div>
+        </div>
         <div class="workspace-body">
           <div class="mode-learning">
             <!-- Overview Stats -->
@@ -658,21 +680,26 @@ models: [deepseek-v4-flash, qwen3.8-max,
                 <p>截至 2026 年 8 月，DSH 社区已形成庞大的插件生态。以下数据来自 GitHub <code>dsh-plugin</code> 话题与社区兼容性雷达的交叉验证：</p>
                 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
                   <div style="padding:16px;background:var(--accent-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div style="font-size:28px;font-weight:800;color:var(--accent)">7,400+</div>
+                    <div class="stat-repo-count" style="font-size:28px;font-weight:800;color:var(--accent)">7,400+</div>
                     <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">dsh-plugin 话题仓库</div>
                   </div>
                   <div style="padding:16px;background:var(--blue-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div style="font-size:28px;font-weight:800;color:var(--blue)">1,034</div>
+                    <div class="stat-available" style="font-size:28px;font-weight:800;color:var(--blue)">1,034</div>
                     <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">兼容可用插件</div>
                   </div>
                   <div style="padding:16px;background:var(--green-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div style="font-size:28px;font-weight:800;color:var(--green)">14</div>
+                    <div class="stat-categories" style="font-size:28px;font-weight:800;color:var(--green)">14</div>
                     <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">插件分类</div>
                   </div>
                   <div style="padding:16px;background:var(--purple-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div style="font-size:28px;font-weight:800;color:var(--purple)">88,000+</div>
+                    <div class="stat-top-stars" style="font-size:28px;font-weight:800;color:var(--purple)">88,000+</div>
                     <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">Top 1 插件 ⭐</div>
                   </div>
+                </div>
+                <div class="time-period-info" style="font-size:12px;color:var(--ink-tertiary);margin-top:-8px">
+                  <span class="period-label">📅 当前视图：</span>
+                  <strong class="period-value">日数据</strong>
+                  <span class="period-detail"> — 最新快照</span>
                 </div>
                 <p><strong>生态健康度：</strong>在 1,810 个已定位的插件仓库中，<span style="color:var(--green);font-weight:600">1,034 个（57%）</span>经社区运行级实测为可用，388 个（21%）不兼容，其余为待定或未测。</p>
               </div>
@@ -917,19 +944,12 @@ const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
 
 // Sidebar collapse toggle
 let sidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-if(sidebarCollapsed) sidebar.setAttribute('data-collapsed', 'true');
-updateToggleIcon();
-
-sidebarToggle.addEventListener('click', () => {
-  const collapsed = sidebar.getAttribute('data-collapsed') === 'true';
-  sidebar.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
-  localStorage.setItem('sidebar-collapsed', !collapsed);
-  updateToggleIcon();
-});
-
-function updateToggleIcon() {
-  const collapsed = sidebar.getAttribute('data-collapsed') === 'true';
-  sidebarToggle.textContent = collapsed ? '▶' : '◀';
+if(sidebarCollapsed) {
+  sidebar.setAttribute('data-collapsed', 'true');
+  sidebarToggle.textContent = '▶';
+} else {
+  sidebar.setAttribute('data-collapsed', 'false');
+  sidebarToggle.textContent = '◀';
 }
 
 const tabMeta = {
@@ -957,8 +977,37 @@ navItems.forEach(item => {
       breadcrumbTab.textContent = '· ' + meta.bread;
     }
     // Close sidebar on mobile
-    if(window.innerWidth <= 760) sidebar.setAttribute('data-collapsed', 'true');
+    if(window.innerWidth <= 760) {
+      sidebar.setAttribute('data-collapsed', 'true');
+      document.getElementById('sidebarOverlay').style.display = 'none';
+    }
   });
+});
+
+// ========== Sidebar Collapse ==========
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+
+sidebarToggle.addEventListener('click', () => {
+  const collapsed = sidebar.getAttribute('data-collapsed') === 'true';
+  sidebar.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+  localStorage.setItem('sidebar-collapsed', collapsed ? 'false' : 'true');
+  sidebarToggle.textContent = collapsed ? '◀' : '▶';
+  if(!collapsed && window.innerWidth <= 760) {
+    sidebarOverlay.style.display = 'none';
+  }
+});
+
+// Mobile menu button
+mobileMenuBtn.addEventListener('click', () => {
+  sidebar.setAttribute('data-collapsed', 'false');
+  sidebarOverlay.style.display = 'block';
+});
+
+// Overlay click to close sidebar
+sidebarOverlay.addEventListener('click', () => {
+  sidebar.setAttribute('data-collapsed', 'true');
+  sidebarOverlay.style.display = 'none';
 });
 
 // ========== Theme Toggle ==========
@@ -970,13 +1019,59 @@ themeBtn.addEventListener('click', () => {
 });
 
 // ========== View Mode Switcher ==========
-const viewBtns = document.querySelectorAll('.model-switcher button');
+const viewBtns = document.querySelectorAll('.model-switcher:not(.time-filter) button');
 viewBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     viewBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
     btn.classList.add('active');
     btn.setAttribute('aria-selected', 'true');
     document.body.setAttribute('data-view', btn.dataset.view);
+  });
+});
+
+// ========== Plugin Data & Time Filter ==========
+// Embedded plugin data from collector
+const PLUGIN_DATA = {
+  daily: { totalRepos: 7400, available: 1034, categories: 14, topStars: 88822, topName: 'Open Design', date: '2026-08-18' },
+  weekly: { totalRepos: 7350, available: 1020, categories: 14, topStars: 88600, topName: 'Open Design', startDate: '2026-08-12', endDate: '2026-08-18', avgGrowth: 85 },
+  monthly: { totalRepos: 7200, available: 990, categories: 14, topStars: 88000, topName: 'Open Design', startDate: '2026-07-19', endDate: '2026-08-18', growth: 200 }
+};
+
+// Time filter switcher
+const timeBtns = document.querySelectorAll('.time-filter button');
+const statRepoCount = document.querySelector('.stat-repo-count');
+const statAvailable = document.querySelector('.stat-available');
+const statCategories = document.querySelector('.stat-categories');
+const statTopStars = document.querySelector('.stat-top-stars');
+const periodLabel = document.querySelector('.period-value');
+const periodDetail = document.querySelector('.period-detail');
+
+function updatePluginStats(period) {
+  const data = PLUGIN_DATA[period];
+  if (!data) return;
+  
+  statRepoCount.textContent = data.totalRepos.toLocaleString() + '+';
+  statAvailable.textContent = data.available.toLocaleString();
+  statCategories.textContent = data.categories;
+  statTopStars.textContent = data.topStars.toLocaleString() + '+';
+  
+  const labels = { daily: '日数据', weekly: '周数据', monthly: '月数据' };
+  const details = {
+    daily: `最新快照：${data.date}`,
+    weekly: `${data.startDate} ~ ${data.endDate} · 周均增长 ${data.avgGrowth}`,
+    monthly: `${data.startDate} ~ ${data.endDate} · 月增长 ${data.growth}`
+  };
+  
+  periodLabel.textContent = labels[period];
+  periodDetail.textContent = ' — ' + details[period];
+}
+
+timeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    timeBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    updatePluginStats(btn.dataset.period);
   });
 });
 </script>
