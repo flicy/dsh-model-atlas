@@ -333,10 +333,15 @@ body.dark .flow-content code{background:var(--bg-warm);color:var(--ink-on-dark)}
           <span class="label">架构原理</span>
           <span class="badge">5</span>
         </button>
+        <button class="sidebar-item" data-tab="plugins">
+          <span class="icon">🧩</span>
+          <span class="label">插件生态</span>
+          <span class="badge">6</span>
+        </button>
         <button class="sidebar-item" data-tab="quickstart">
           <span class="icon">🚀</span>
           <span class="label">快速上手</span>
-          <span class="badge">6</span>
+          <span class="badge">7</span>
         </button>
       </div>
     </nav>
@@ -641,6 +646,205 @@ models: [deepseek-v4-flash, qwen3.8-max,
         </div>
       </div>
 
+      <!-- ==================== TAB: Plugins ==================== -->
+      <div class="tab-content" id="tab-plugins">
+        <div class="workspace-head"><div><div class="step-label">Plugins</div><h2>DSH 插件生态全景分析</h2></div><p>基于 GitHub 官方社区数据，全面解析 DSH 插件生态</p></div>
+        <div class="workspace-body">
+          <div class="mode-learning">
+            <!-- Overview Stats -->
+            <div class="flow-stage">
+              <div class="stage-label"><span>◉</span><div><strong>插件生态总览</strong><small>ECOSYSTEM OVERVIEW</small></div></div>
+              <div class="flow-content">
+                <p>截至 2026 年 8 月，DSH 社区已形成庞大的插件生态。以下数据来自 GitHub <code>dsh-plugin</code> 话题与社区兼容性雷达的交叉验证：</p>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
+                  <div style="padding:16px;background:var(--accent-soft);border-radius:var(--radius-xs);text-align:center">
+                    <div style="font-size:28px;font-weight:800;color:var(--accent)">7,400+</div>
+                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">dsh-plugin 话题仓库</div>
+                  </div>
+                  <div style="padding:16px;background:var(--blue-soft);border-radius:var(--radius-xs);text-align:center">
+                    <div style="font-size:28px;font-weight:800;color:var(--blue)">1,034</div>
+                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">兼容可用插件</div>
+                  </div>
+                  <div style="padding:16px;background:var(--green-soft);border-radius:var(--radius-xs);text-align:center">
+                    <div style="font-size:28px;font-weight:800;color:var(--green)">14</div>
+                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">插件分类</div>
+                  </div>
+                  <div style="padding:16px;background:var(--purple-soft);border-radius:var(--radius-xs);text-align:center">
+                    <div style="font-size:28px;font-weight:800;color:var(--purple)">88,000+</div>
+                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">Top 1 插件 ⭐</div>
+                  </div>
+                </div>
+                <p><strong>生态健康度：</strong>在 1,810 个已定位的插件仓库中，<span style="color:var(--green);font-weight:600">1,034 个（57%）</span>经社区运行级实测为可用，388 个（21%）不兼容，其余为待定或未测。</p>
+              </div>
+            </div>
+
+            <!-- Top Plugins -->
+            <div class="flow-stage" style="margin-top:14px">
+              <div class="stage-label"><span>🔥</span><div><strong>社区热门插件 Top 15</strong><small>BY GITHUB STARS</small></div></div>
+              <div class="flow-content">
+                <div class="pricing-wrap" style="margin-top:10px">
+                  <table class="pricing-table">
+                    <thead><tr><th>#</th><th>插件</th><th>分类</th><th>⭐ Stars</th><th>说明</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td><span class="model-name"><a href="https://github.com/nexu-io/open-design" target="_blank" style="color:var(--ink)">Open Design</a></span></td><td>设计</td><td><span class="price-cell" style="color:var(--orange)">88,813</span></td><td>AI 设计引擎：原型、落地页、仪表盘、幻灯片、图片视频</td></tr>
+                      <tr><td>2</td><td><span class="model-name"><a href="https://github.com/anywhere-labs/deepseek-harness-desktop" target="_blank" style="color:var(--ink)">DSH Desktop</a></span></td><td>桌面端</td><td><span class="price-cell" style="color:var(--orange)">13,483</span></td><td>现代化桌面端解决方案，万物皆插件</td></tr>
+                      <tr><td>3</td><td><span class="model-name"><a href="https://github.com/zhu1090093659/dsh-web-ui" target="_blank" style="color:var(--ink)">dsh-web-ui</a></span></td><td>Web UI 增强</td><td><span class="price-cell">4,540</span></td><td>任务面板/Git 图/右侧面板/移动端/皮肤中心</td></tr>
+                      <tr><td>4</td><td><span class="model-name"><a href="https://github.com/edison7009/EchoBird" target="_blank" style="color:var(--ink)">EchoBird</a></span></td><td>启动器</td><td><span class="price-cell">3,075</span></td><td>一键安装多 Agent 框架</td></tr>
+                      <tr><td>5</td><td><span class="model-name"><a href="https://github.com/ccch1mneyyy/dsh-TUI" target="_blank" style="color:var(--ink)">dsh-TUI</a></span></td><td>终端 UI</td><td><span class="price-cell">1,959</span></td><td>Claude Code 风格全屏终端，鲸鱼顶栏/实时状态</td></tr>
+                      <tr><td>6</td><td><span class="model-name"><a href="https://github.com/omdsh-dev/DSH-better-sidebar" target="_blank" style="color:var(--ink)">DSH-better-sidebar</a></span></td><td>Web UI 增强</td><td><span class="price-cell">1,475</span></td><td>完整侧边栏工作台，支持三方拓展注册</td></tr>
+                      <tr><td>7</td><td><span class="model-name"><a href="https://github.com/AdamPlatin123/awesome-dsh-plugins" target="_blank" style="color:var(--ink)">awesome-dsh-plugins</a></span></td><td>插件雷达</td><td><span class="price-cell">1,209</span></td><td>DSH 插件雷达：7600+ 候选，运行级实测四档判定</td></tr>
+                      <tr><td>8</td><td><span class="model-name"><a href="https://github.com/ysr666/dsh-vision-router" target="_blank" style="color:var(--ink)">dsh-vision-router</a></span></td><td>视觉</td><td><span class="price-cell">750</span></td><td>纯文本模型的视觉增强：内置免费视觉链</td></tr>
+                      <tr><td>9</td><td><span class="model-name"><a href="https://github.com/hairyf/deepseek-harness-desktop" target="_blank" style="color:var(--ink)">DSH Desktop (Tauri)</a></span></td><td>桌面端</td><td><span class="price-cell">525</span></td><td>Tauri 桌面版，仅 5MB 安装包</td></tr>
+                      <tr><td>10</td><td><span class="model-name"><a href="https://github.com/NanmiCoder/dsh-agent-teams" target="_blank" style="color:var(--ink)">dsh-agent-teams</a></span></td><td>Agent 编排</td><td><span class="price-cell">542</span></td><td>多智能体团队协作</td></tr>
+                      <tr><td>11</td><td><span class="model-name"><a href="https://github.com/Ikalus1988/MisakaNet" target="_blank" style="color:var(--ink)">MisakaNet</a></span></td><td>知识库</td><td><span class="price-cell">405</span></td><td>零依赖、git 备份的微课库</td></tr>
+                      <tr><td>12</td><td><span class="model-name"><a href="https://github.com/omdsh-dev/dsh-at-file" target="_blank" style="color:var(--ink)">dsh-at-file</a></span></td><td>工具</td><td><span class="price-cell">372</span></td><td>Codex 风格 @file 提及</td></tr>
+                      <tr><td>13</td><td><span class="model-name"><a href="https://github.com/text2future/flowix" target="_blank" style="color:var(--ink)">Flowix</a></span></td><td>笔记</td><td><span class="price-cell">319</span></td><td>内置 DSH Agent 的笔记/记忆工具</td></tr>
+                      <tr><td>14</td><td><span class="model-name"><a href="https://github.com/bowenliang123/dsh-context" target="_blank" style="color:var(--ink)">dsh-context</a></span></td><td>上下文</td><td><span class="price-cell">312</span></td><td>上下文洞察面板，可视化上下文窗口</td></tr>
+                      <tr><td>15</td><td><span class="model-name"><a href="https://github.com/vibeinging/deepseek-harness-desktop-app" target="_blank" style="color:var(--ink)">dsh-work</a></span></td><td>桌面端</td><td><span class="price-cell">394</span></td><td>本地 AI 工作空间</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Analysis -->
+            <div class="flow-stage" style="margin-top:14px">
+              <div class="stage-label"><span>📊</span><div><strong>插件分类分析</strong><small>14 CATEGORIES</small></div></div>
+              <div class="flow-content">
+                <p>社区将 DSH 插件生态划分为 <strong>14 个类别</strong>，覆盖了从工具到 AI 编排的完整能力链：</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🛠️ 工具 · 30 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· Git 工具（状态/diff/log/提交）</li><li>· 测试运行器（自动检测 vitest/jest/pytest）</li>
+                      <li>· 安全扫描（密钥/危险模式检测）</li><li>· 数据工具（CSV/JSON/正则/编码）</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🧩 技能包 · 16 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 工程纪律技能包</li><li>· 跨平台技能迁移（Claude/Codex/OpenCode）</li>
+                      <li>· 书籍转技能流水线</li><li>· 技能对比评测（forkprobe）</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🔌 MCP · 8 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· MCP 服务器管理</li><li>· 搜索 MCP（Tavily/Brave/Exa）</li>
+                      <li>· OAuth 2.1 MCP 客户端</li><li>· 视觉 MCP 服务器</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🎨 UI/皮肤/主题 · 43 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 皮肤系统（鲸鱼娘/像素/QQ2006/初音）</li><li>· 侧边栏工作台</li>
+                      <li>· 交互式 UI 组件（GenUI）</li><li>· 对话批注/导航栏/聚焦模式</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🖥️ 桌面/TUI/移动 · 22 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 终端 TUI（Claude Code 风格）</li><li>· 桌面端（Tauri/Electron/WPF）</li>
+                      <li>· 移动端客户端</li><li>· 社区发行版（oh-dsh）</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🤖 Agent 编排 · 10 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 多智能体团队（dsh-agent-teams）</li><li>· 跨会话消息传递</li>
+                      <li>· 跨实例事件互联</li><li>· 去中心化多设备舰队</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🧠 上下文/记忆 · 24 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 跨会话长期记忆</li><li>· 上下文压缩（ACP）</li>
+                      <li>· 上下文审计面板</li><li>· 会话回退（turn-rewind）</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">👁️ 多模态/视觉 · 17 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 视觉路由（纯文本模型可看图）</li><li>· OCR/截图/计算机视觉</li>
+                      <li>· 图片问答/标注</li><li>· 视频生成（鲸影 DSH Video Studio）</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🔁 工作流/自动化 · 21 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 深度研究/定时任务</li><li>· 条件唤醒/审查循环</li>
+                      <li>· 自进化科研工作流</li><li>· 测试环境同步/自动化</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">📡 通知/渠道 · 18 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· Telegram/微信/飞书机器人</li><li>· SSH 终端</li>
+                      <li>· 桌面通知/WebSocket 桥接</li><li>· B站动态发布</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🌐 浏览器/搜索 · 16 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 浏览器控制/网页抓取</li><li>· 搜索 Provider 替换</li>
+                      <li>· 私有化搜索方案</li><li>· 网页内容提取</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🏗️ 基础设施/管理 · 33 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 插件市场/管理器（20+ 个市场）</li><li>· 健康检查/安全审计</li>
+                      <li>· 多用户服务器部署</li><li>· 成本监控/Token 统计</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🎮 趣味/其他 · 31 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 游戏/宠物/贴纸</li><li>· 音乐播放器（BGM/网易云）</li>
+                      <li>· 股市行情面板</li><li>· 壁纸引擎/动态背景</li>
+                    </ul>
+                  </div>
+                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+                    <strong style="font-size:13px;color:var(--ink)">🏛️ 官方/元 · 10 个</strong>
+                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
+                      <li>· 官方核心仓库</li><li>· 精选列表/社区评测</li>
+                      <li>· 兼容性雷达</li><li>· 插件商店/索引站</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Key Insights -->
+            <div class="flow-stage" style="margin-top:14px">
+              <div class="stage-label"><span>💡</span><div><strong>生态洞察与建议</strong><small>INSIGHTS</small></div></div>
+              <div class="flow-content">
+                <ul>
+                  <li><strong>安装插件</strong> — 使用 <code>dsh plugin --profile web add &lt;包名&gt;</code> 命令，或 <code>dsh plugin add github:用户名/仓库名</code> 直接从 GitHub 安装</li>
+                  <li><strong>推荐先装</strong> — <code>dsh-TUI</code>（终端 UI）、<code>DSH-better-sidebar</code>（侧边栏工作台）、<code>dsh-at-file</code>（@文件提及），三款插件显著提升日常体验</li>
+                  <li><strong>注意兼容性</strong> — 社区雷达显示约 21% 的插件在最新版 DSH 上不兼容，安装前查看仓库的 README 确认支持版本</li>
+                  <li><strong>安全提醒</strong> — 插件安装后即可访问你的工作区文件，建议从高星/活跃维护的仓库安装</li>
+                  <li><strong>开发自己的插件</strong> — 使用 <code>dshp-cli</code> 脚手架工具快速创建插件骨架</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="mode-ref">
+            <div class="ref-section">
+              <div class="ref-section-title">插件安装速查</div>
+              <div class="ref-grid">
+                <div class="ref-item"><span class="ref-key">安装命令</span><span class="ref-val"><code>dsh plugin --profile web add &lt;pkg&gt;</code></span></div>
+                <div class="ref-item"><span class="ref-key">GitHub 安装</span><span class="ref-val"><code>dsh plugin add github:用户/仓库</code></span></div>
+                <div class="ref-item"><span class="ref-key">热门推荐</span><span class="ref-val">dsh-TUI · DSH-better-sidebar · dsh-at-file · dsh-vision-router</span></div>
+                <div class="ref-item"><span class="ref-key">插件市场</span><span class="ref-val">dsh-market · dsh-plugin-marketplace · awesome-dsh-plugins</span></div>
+                <div class="ref-item"><span class="ref-key">生态总量</span><span class="ref-val">7,400+ 仓库 · 1,034 兼容可用 · 14 分类</span></div>
+                <div class="ref-item"><span class="ref-key">开发脚手架</span><span class="ref-val"><code>npx dshp-cli create my-plugin</code></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ==================== TAB: Quickstart ==================== -->
       <div class="tab-content" id="tab-quickstart">
         <div class="workspace-head"><div><div class="step-label">Quick Start</div><h2>5 步快速配置模型环境</h2></div><p>从零开始，5 分钟配置好 DSH 模型环境</p></div>
@@ -734,6 +938,7 @@ const tabMeta = {
   pricing: { title: '模型费用排名', desc: '23 款主流模型按每百万 Token 价格排序，从 $0.50 到 $150 全面对比。', bread: '费用排名' },
   recommendation: { title: '场景推荐与选型', desc: '6 大场景的模型推荐方案，DSH 官方首选 DeepSeek V4 Flash。', bread: '场景推荐' },
   architecture: { title: '模型层架构', desc: 'DSH 的模型接入层设计原理：插件化、配置层次、凭据管理。', bread: '架构原理' },
+  plugins: { title: '插件生态分析', desc: '基于 GitHub 社区数据的 DSH 插件全景分析：7,400+ 仓库、14 分类、热门推荐与安装指南。', bread: '插件生态' },
   quickstart: { title: '快速上手', desc: '5 步从零配置 DSH 模型环境，5 分钟上手。', bread: '快速上手' }
 };
 
