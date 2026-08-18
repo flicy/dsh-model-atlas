@@ -1,0 +1,22 @@
+{
+  "daily": {
+    "date": "2026-08-18",
+    "totalRepos": 1000,
+    "categories": 15
+  },
+  "weekly": {
+    "startDate": "2026-08-18",
+    "endDate": "2026-08-18",
+    "avgTotalRepos": 1000,
+    "avgCategories": 15,
+    "snapshots": 1
+  },
+  "monthly": {
+    "startDate": "2026-08-18",
+    "endDate": "2026-08-18",
+    "avgTotalRepos": 1000,
+    "avgCategories": 15,
+    "totalGrowth": 0,
+    "snapshots": 1
+  }
+}
