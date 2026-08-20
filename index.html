@@ -3,298 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DSH Model Atlas · DeepSeek Harness 模型工具手册 · GrowthOS</title>
-<meta name="description" content="DeepSeek Harness 模型接入全景指南：Provider 配置、费用排名、场景推荐与最佳实践">
+<title>DSH 完全指南 · DeepSeek Harness 从入门到精通 · GrowthOS</title>
+<meta name="description" content="DeepSeek Harness 完全指南：新手部署、五大实战案例、手机端运行、Token 省钱策略、模型接入与费用排名">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ========== GrowthOS Design System ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#FAFAF9;--bg-warm:#F5F3EF;--bg-card:#FFFFFF;--bg-card-hover:#FEFEFE;
-  --bg-dark:#1A1A1A;--bg-dark-card:#242424;--surface:#F0EEEB;--surface-hover:#E8E5E0;
-  --ink:#1A1A1A;--ink-secondary:#52525B;--ink-tertiary:#A1A1AA;--ink-faint:#D4D4D8;
-  --ink-on-dark:#F4F4F5;--ink-on-dark-secondary:#A1A1AA;
-  --accent:#E85D3A;--accent-soft:rgba(232,93,58,0.08);--accent-medium:rgba(232,93,58,0.15);--accent-hover:#D14E2E;
-  --blue:#3B82F6;--blue-soft:rgba(59,130,246,0.08);
-  --orange:#F59E0B;--orange-soft:rgba(245,158,11,0.08);
-  --pink:#EC4899;--pink-soft:rgba(236,72,153,0.08);
-  --teal:#14B8A6;--teal-soft:rgba(20,184,166,0.08);
-  --green:#22C55E;--green-soft:rgba(34,197,94,0.08);
-  --purple:#8B5CF6;--purple-soft:rgba(139,92,246,0.08);
-  --flower:#F43F5E;--error:#F43F5E;
-  --radius:16px;--radius-sm:10px;--radius-xs:6px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md:0 4px 12px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.04);
-  --shadow-lg:0 12px 40px rgba(0,0,0,0.08),0 4px 12px rgba(0,0,0,0.04);
-  --shadow-xl:0 24px 64px rgba(0,0,0,0.10);
-  --ease:cubic-bezier(0.4,0,0.2,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
-  --transition:0.3s var(--ease);
-  --sidebar-w:260px;--sidebar-w-collapsed:0px;
-  --mono:"JetBrains Mono",monospace;
-  --sans:"Inter","Noto Sans SC",-apple-system,BlinkMacSystemFont,sans-serif;
-}
-html{scroll-behavior:smooth}
-body{margin:0;min-width:320px;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-::selection{background:var(--accent-medium);color:var(--ink)}
-button{color:inherit;font:inherit;cursor:pointer;border:none;background:none}
-button:focus-visible{outline:3px solid var(--accent-medium);outline-offset:2px}
-.mono{font-family:var(--mono)}
-a{color:inherit;text-decoration:none}
-
-/* ========== App Shell ========== */
+:root{--bg:#FAFAF9;--bg-warm:#F5F3EF;--bg-card:#FFFFFF;--bg-card-hover:#FEFEFE;--bg-dark:#1A1A1A;--bg-dark-card:#242424;--surface:#F0EEEB;--surface-hover:#E8E5E0;--ink:#1A1A1A;--ink-secondary:#52525B;--ink-tertiary:#A1A1AA;--ink-faint:#D4D4D8;--ink-on-dark:#F4F4F5;--ink-on-dark-secondary:#A1A1AA;--accent:#E85D3A;--accent-soft:rgba(232,93,58,0.08);--accent-medium:rgba(232,93,58,0.15);--accent-hover:#D14E2E;--blue:#3B82F6;--blue-soft:rgba(59,130,246,0.08);--orange:#F59E0B;--orange-soft:rgba(245,158,11,0.08);--pink:#EC4899;--pink-soft:rgba(236,72,153,0.08);--teal:#14B8A6;--teal-soft:rgba(20,184,166,0.08);--green:#22C55E;--green-soft:rgba(34,197,94,0.08);--purple:#8B5CF6;--purple-soft:rgba(139,92,246,0.08);--radius:16px;--radius-sm:10px;--radius-xs:6px;--shadow-sm:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.06);--shadow-md:0 4px 12px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.04);--shadow-lg:0 12px 40px rgba(0,0,0,0.08),0 4px 12px rgba(0,0,0,0.04);--ease:cubic-bezier(0.4,0,0.2,1);--transition:0.3s var(--ease);--sidebar-w:260px;--mono:"JetBrains Mono",monospace;--sans:"Inter","Noto Sans SC",-apple-system,BlinkMacSystemFont,sans-serif}
+html{scroll-behavior:smooth}body{margin:0;min-width:320px;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}::selection{background:var(--accent-medium);color:var(--ink)}button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}button:focus-visible{outline:3px solid var(--accent-medium);outline-offset:2px}.mono{font-family:var(--mono)}a{color:inherit;text-decoration:none}
 .app-shell{min-height:100vh;position:relative}
-
-/* ========== Sidebar ========== */
-.sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;width:var(--sidebar-w);display:flex;flex-direction:column;background:var(--bg-dark);color:var(--ink-on-dark);transition:transform .3s cubic-bezier(0.4,0,0.2,1);overflow:hidden;box-shadow:2px 0 12px rgba(0,0,0,0.08)}
-.sidebar[data-collapsed="true"]{transform:translateX(calc(var(--sidebar-w)*-1));box-shadow:none}
-.sidebar-inner{display:flex;flex-direction:column;height:100%;width:var(--sidebar-w);padding:0;overflow:hidden}
-
-/* Sidebar toggle button - pinned to sidebar edge */
-.sidebar-toggle{position:fixed;left:var(--sidebar-w);top:50%;z-index:101;width:20px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.08);border-left:none;border-radius:0 10px 10px 0;color:var(--ink-on-dark-secondary);cursor:pointer;transition:all .3s cubic-bezier(0.4,0,0.2,1);font-size:10px;transform:translateY(-50%);opacity:0.7}
-.sidebar-toggle:hover{opacity:1;color:var(--ink-on-dark);background:var(--bg-dark-card);border-color:rgba(255,255,255,0.15);width:24px}
-.sidebar[data-collapsed="true"]~.sidebar-toggle{left:0;opacity:0.9}
-.sidebar[data-collapsed="true"]~.sidebar-toggle:hover{left:2px;opacity:1}
-
-/* Brand */
-.brand{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.06)}
-.brand-mark{width:32px;height:32px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;font-weight:900;color:white;line-height:1}
-.brand-text{flex:1;min-width:0}
-.brand-text strong{display:block;font-size:15px;font-weight:800;letter-spacing:-0.02em;color:var(--ink-on-dark)}
-.brand-text small{display:block;margin-top:1px;color:var(--ink-on-dark-secondary);font-size:11px;font-weight:400}
-
-/* Nav */
-.sidebar-nav{flex:1;overflow-y:auto;padding:8px 12px}
-.sidebar-section{margin-bottom:4px}
-.sidebar-section-title{padding:12px 12px 6px;color:var(--ink-on-dark-secondary);font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;font-family:var(--mono)}
-.sidebar-item{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--ink-on-dark);background:transparent;text-align:left;font-size:14px;font-weight:500;transition:all .2s var(--ease);cursor:pointer}
-.sidebar-item:hover{background:rgba(255,255,255,0.06)}
-.sidebar-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
-.sidebar-item .icon{width:20px;text-align:center;flex-shrink:0;font-size:16px}
-.sidebar-item .label{flex:1;min-width:0}
-.sidebar-item .badge{font-family:var(--mono);font-size:10px;color:var(--ink-on-dark-secondary);background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:4px}
-
-/* Sidebar footer */
-.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.06)}
-.sidebar-footer p{font-size:11px;color:var(--ink-on-dark-secondary);line-height:1.6;margin:0}
-
-/* ========== Page ========== */
-.page{min-width:0;min-height:100vh;margin-left:var(--sidebar-w);transition:margin-left .3s var(--ease);overflow-x:hidden}
-.sidebar[data-collapsed="true"]~.page{margin-left:0}
-
-/* ========== Topbar ========== */
-.topbar{height:64px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,0.06);background:rgba(250,250,249,0.85);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);position:sticky;top:0;z-index:20}
-.breadcrumb{display:flex;align-items:center;gap:8px;color:var(--ink-tertiary);font-size:13px}
-.breadcrumb a{color:var(--ink-tertiary);transition:color .2s}
-.breadcrumb a:hover{color:var(--ink)}
-.breadcrumb .sep{color:var(--ink-faint);font-weight:400}
-.breadcrumb .current{color:var(--ink);font-weight:600}
-.top-actions{display:flex;align-items:center;gap:8px}
-.top-icon-btn{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(0,0,0,0.08);border-radius:10px;background:var(--bg-card);cursor:pointer;transition:all .2s var(--ease);color:var(--ink-secondary)}
-.top-icon-btn:hover{background:var(--surface);color:var(--ink);border-color:rgba(0,0,0,0.12)}
-.top-icon-btn svg{width:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-
-/* ========== Main ========== */
-main{padding:0;min-height:0}
-
-/* ========== Intro ========== */
-.intro{position:relative;z-index:14;min-height:0;padding:24px 28px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-shrink:0;flex-wrap:wrap}
-.intro-kicker{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.intro-kicker::before{content:'';display:block;width:14px;height:2px;background:var(--accent);border-radius:1px}
-.intro h1{margin:0;font-size:clamp(28px,3.5vw,42px);font-weight:800;letter-spacing:-0.03em;line-height:1.15;color:var(--ink)}
-.intro p{margin:8px 0 0;max-width:600px;color:var(--ink-secondary);font-size:15px;line-height:1.7}
-.intro-actions{display:flex;gap:8px;margin-top:10px}
-.model-controls{flex:0 0 auto;display:grid;justify-items:end;gap:8px;align-self:flex-start}
-.model-switcher{padding:4px;display:flex;gap:3px;border:1px solid rgba(0,0,0,0.08);border-radius:10px;background:var(--bg-card)}
-.model-switcher button{min-width:88px;height:32px;padding:0 12px;border:0;border-radius:7px;color:var(--ink-secondary);background:transparent;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s var(--ease)}
-.model-switcher button.active{color:var(--ink);background:var(--bg-card);box-shadow:var(--shadow-sm);font-weight:600}
-.model-switcher button:hover{color:var(--ink)}
-
-/* ========== Workspace ========== */
-.workspace{margin:0 20px 20px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);background:var(--bg-card);box-shadow:var(--shadow-sm)}
-.workspace-head{padding:20px 28px 16px;display:flex;align-items:end;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(0,0,0,0.06);flex-shrink:0;flex-wrap:wrap}
-.step-label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
-.workspace-head h2{margin:0;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:var(--ink)}
-.workspace-head p{margin:4px 0 0;color:var(--ink-secondary);font-size:13px;line-height:1.5}
-.workspace-body{overflow-y:auto;padding:24px 28px 28px;background:var(--bg-card)}
-
-/* ========== Tab Content ========== */
-.tab-content{display:none;min-height:0}
-.tab-content.active{display:block;min-height:0}
-
-/* ========== Learning Mode vs Quick Reference ========== */
-.mode-learning{display:block}
-.mode-ref{display:none}
-body[data-view="reference"] .mode-learning{display:none}
-body[data-view="reference"] .mode-ref{display:block}
-
-/* ========== Content Cards ========== */
-.content-card{padding:24px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);background:var(--bg-card);margin-bottom:14px;transition:all .25s var(--ease)}
-.content-card:hover{box-shadow:var(--shadow-md);border-color:rgba(0,0,0,0.1)}
-.content-card:last-child{margin-bottom:0}
-.content-card .card-icon{font-size:24px;margin-bottom:10px}
-.content-card h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--ink)}
-.content-card p{font-size:13px;color:var(--ink-secondary);line-height:1.7;margin-bottom:0}
-
-/* ========== Grid ========== */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:1100px){.grid-3{grid-template-columns:1fr 1fr}}
-@media(max-width:760px){.grid-2,.grid-3{grid-template-columns:1fr}}
-
-/* ========== Provider Cards ========== */
-.provider-card{padding:24px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);background:var(--bg-card);transition:all .25s var(--ease)}
-.provider-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:rgba(0,0,0,0.1)}
-.provider-card-header{display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.provider-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.provider-card:nth-child(1) .provider-card-icon{background:var(--accent-soft)}
-.provider-card:nth-child(2) .provider-card-icon{background:var(--blue-soft)}
-.provider-card:nth-child(3) .provider-card-icon{background:var(--purple-soft)}
-.provider-card:nth-child(4) .provider-card-icon{background:var(--teal-soft)}
-.provider-card:nth-child(5) .provider-card-icon{background:var(--orange-soft)}
-.provider-card:nth-child(6) .provider-card-icon{background:var(--pink-soft)}
-.provider-name{font-size:16px;font-weight:700;color:var(--ink)}
-.provider-badge{font-family:var(--mono);font-size:10px;color:var(--ink-tertiary);background:var(--bg-warm);padding:2px 8px;border-radius:4px;margin-left:6px;font-weight:500}
-.provider-detail{font-size:13px;color:var(--ink-secondary);line-height:1.7;margin-bottom:14px}
-.provider-code{background:var(--bg-dark);color:var(--ink-on-dark);border-radius:var(--radius-xs);padding:14px;font-family:var(--mono);font-size:12px;line-height:1.6;overflow-x:auto;white-space:pre;tab-size:2}
-
-/* ========== Pricing Table ========== */
-.pricing-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid rgba(0,0,0,0.06)}
-.pricing-table{width:100%;border-collapse:collapse;font-size:13px}
-.pricing-table thead{background:var(--bg-dark)}
-.pricing-table th{padding:14px 18px;text-align:left;font-weight:600;font-size:12px;letter-spacing:0.3px;color:var(--ink-on-dark);white-space:nowrap}
-.pricing-table td{padding:12px 18px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--ink-secondary);vertical-align:top;font-size:13px}
-.pricing-table tbody tr{transition:background .15s}
-.pricing-table tbody tr:hover{background:var(--accent-soft)}
-.pricing-table tbody tr:last-child td{border-bottom:none}
-.pricing-table .model-name{font-weight:600;color:var(--ink);white-space:nowrap}
-.pricing-table .price-cell{font-family:var(--mono);font-size:12px;font-weight:500;white-space:nowrap}
-.pricing-table .price-cheapest{color:var(--green)}
-.pricing-table .price-expensive{color:var(--accent)}
-.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;margin:1px 2px;line-height:1.4}
-.tag-reasoning{background:var(--purple-soft);color:var(--purple)}
-.tag-vision{background:var(--teal-soft);color:var(--teal)}
-.tag-fast{background:var(--green-soft);color:var(--green)}
-.tag-popular{background:var(--orange-soft);color:var(--orange)}
-.tag-agent{background:var(--accent-soft);color:var(--accent)}
-.tag-cheap{background:var(--green-soft);color:var(--green)}
-
-/* ========== Recommendation Cards ========== */
-.rec-card{padding:24px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);background:var(--bg-card);transition:all .25s var(--ease)}
-.rec-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:rgba(0,0,0,0.1)}
-.rec-card-icon{font-size:28px;margin-bottom:10px}
-.rec-card h4{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--ink)}
-.rec-card p{font-size:12px;color:var(--ink-secondary);line-height:1.6;margin-bottom:12px}
-.rec-models{display:flex;flex-direction:column;gap:5px}
-.rec-model-item{font-size:12px;color:var(--ink-secondary);padding:7px 10px;background:var(--bg-warm);border-radius:6px;display:flex;align-items:center;gap:6px;line-height:1.5}
-.rec-model-item::before{content:'▸';color:var(--accent);font-weight:700}
-
-/* ========== Highlight Box ========== */
-.highlight-box{padding:24px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);background:var(--bg-card);transition:all .25s var(--ease);margin-top:20px}
-.highlight-box:hover{box-shadow:var(--shadow-md)}
-.highlight-box .h-icon{font-size:28px;margin-bottom:10px}
-.highlight-box h4{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--ink)}
-.highlight-box p{font-size:13px;color:var(--ink-secondary);line-height:1.7;margin-bottom:0}
-.highlight-box ul{list-style:none;margin-top:10px}
-.highlight-box ul li{padding:5px 0;padding-left:18px;position:relative;font-size:13px;color:var(--ink-secondary);line-height:1.6}
-.highlight-box ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:600}
-
-/* ========== Architecture Flow ========== */
-.flow-stage{padding:20px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);margin-bottom:14px;background:var(--bg-card);transition:all .25s var(--ease)}
-.flow-stage:hover{box-shadow:var(--shadow-sm)}
-.flow-stage:last-child{margin-bottom:0}
-.stage-label{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.stage-label>span{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;background:var(--accent-soft);color:var(--accent);font:700 15px var(--mono);flex-shrink:0}
-.stage-label strong{font-size:15px;font-weight:700;color:var(--ink)}
-.stage-label small{display:block;color:var(--ink-tertiary);font-size:10px;font-weight:400}
-.flow-content{font-size:13px;color:var(--ink-secondary);line-height:1.7}
-.flow-content ul{list-style:none;margin-top:8px}
-.flow-content ul li{padding:4px 0;padding-left:18px;position:relative}
-.flow-content ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:600}
-.flow-content code{background:var(--bg-warm);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;color:var(--ink)}
-
-/* ========== Quick Steps ========== */
-.qs-steps{position:relative;padding-left:0}
-.qs-step{display:flex;gap:20px;padding:18px 0;position:relative;border-bottom:1px solid rgba(0,0,0,0.04)}
-.qs-step:last-child{border-bottom:none}
-.qs-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);background:var(--bg-card)}
-.qs-body{flex:1;padding-top:4px}
-.qs-body h4{font-size:15px;font-weight:700;margin-bottom:4px;color:var(--ink)}
-.qs-body p{font-size:13px;color:var(--ink-secondary);line-height:1.7;margin-bottom:8px}
-.qs-body .code-block{background:var(--bg-dark);color:var(--ink-on-dark);border-radius:var(--radius-xs);padding:14px;font-family:var(--mono);font-size:12px;line-height:1.6;overflow-x:auto;white-space:pre;margin:8px 0}
-
-/* ========== Model Grid (Overview) ========== */
-.model-family{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.model-family>div{padding:14px;border-radius:var(--radius-xs);background:var(--bg-warm);border:1px solid rgba(0,0,0,0.04)}
-.model-family>div strong{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
-.model-family>div ul{list-style:none}
-.model-family>div ul li{padding:3px 0;padding-left:14px;position:relative;font-size:12px;color:var(--ink-secondary);line-height:1.5}
-.model-family>div ul li::before{content:'·';position:absolute;left:2px;color:var(--accent);font-weight:700}
-@media(max-width:760px){.model-family{grid-template-columns:1fr}}
-
-/* ========== Quick Reference Mode ========== */
-.ref-section{margin-bottom:20px}
-.ref-section:last-child{margin-bottom:0}
-.ref-section-title{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.ref-section-title::before{content:'';display:block;width:12px;height:2px;background:var(--accent);border-radius:1px}
-.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.ref-item{padding:14px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-xs);background:var(--bg-warm);display:flex;align-items:flex-start;gap:10px;transition:all .2s var(--ease)}
-.ref-item:hover{background:var(--surface);border-color:rgba(0,0,0,0.1)}
-.ref-item .ref-key{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap;flex-shrink:0;min-width:80px}
-.ref-item .ref-val{font-size:12px;color:var(--ink-secondary);line-height:1.5}
-.ref-item .ref-val code{background:var(--bg-card);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px}
-
-/* ========== Footer ========== */
-.workspace-footer{min-height:48px;padding:10px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid rgba(0,0,0,0.06);background:var(--bg-warm);flex-shrink:0;flex-wrap:wrap}
-.workspace-footer p{font-size:12px;color:var(--ink-tertiary);margin:0}
-.workspace-footer a{color:var(--ink-secondary);font-weight:500;transition:color .2s}
-.workspace-footer a:hover{color:var(--accent)}
-
-/* ========== Dark Mode ========== */
-body.dark{--bg:#111816;--bg-warm:#18211f;--bg-card:#1A1A1A;--bg-card-hover:#242424;--surface:#2b3733;--surface-hover:#35423c;--ink:#ecf4ef;--ink-secondary:#9eaaa5;--ink-tertiary:#6b7a74;--ink-faint:#4a5a54;--ink-on-dark:#F4F4F5;--ink-on-dark-secondary:#A1A1AA;--bg-dark:#0c1211;--bg-dark-card:#182320;--shadow-sm:0 1px 3px rgba(0,0,0,0.2);--shadow-md:0 4px 12px rgba(0,0,0,0.3);--shadow-lg:0 12px 40px rgba(0,0,0,0.4)}
-body.dark .topbar{background:rgba(17,24,22,0.85)}
-body.dark .top-icon-btn{background:var(--bg-card);border-color:rgba(255,255,255,0.08)}
-body.dark .model-switcher{background:var(--bg-warm);border-color:rgba(255,255,255,0.08)}
-body.dark .model-switcher button.active{background:var(--bg-card)}
-body.dark .workspace{background:var(--bg-card);border-color:rgba(255,255,255,0.06)}
-body.dark .workspace-head,.workspace-footer{border-color:rgba(255,255,255,0.06)}
-body.dark .content-card,.provider-card,.rec-card,.flow-stage,.highlight-box{border-color:rgba(255,255,255,0.06);background:var(--bg-card)}
-body.dark .ref-item{background:var(--bg-warm)}
-body.dark .model-family>div{background:var(--bg-warm)}
-body.dark .pricing-table thead{background:var(--bg-dark)}
-body.dark .pricing-table td{border-color:rgba(255,255,255,0.04)}
-body.dark .provider-code{background:var(--bg-dark)}
-body.dark .qs-body .code-block{background:var(--bg-dark)}
-body.dark .flow-content code{background:var(--bg-warm);color:var(--ink-on-dark)}
-
-/* ========== Responsive ========== */
-@media(max-width:760px){
-  .sidebar{width:100%;z-index:200;transform:translateX(-100%);box-shadow:24px 0 80px rgba(0,0,0,0.3)}
-  .sidebar[data-collapsed="false"]{transform:translateX(0)}
-  .sidebar[data-collapsed="true"]{transform:translateX(-100%)}
-  .sidebar-toggle{display:none}
-  .page{margin-left:0!important}
-  .topbar{height:57px;padding:0 16px}
-  .mobile-menu-btn{display:flex!important}
-  .intro{padding:16px;flex-direction:column;align-items:stretch;gap:12px}
-  .model-controls{justify-items:stretch;align-self:stretch}
-  .model-switcher{width:100%}
-  .model-switcher button{flex:1;min-width:0}
-  .workspace{margin:0 12px 12px;border-radius:12px}
-  .workspace-head{padding:16px 18px;flex-direction:column;align-items:flex-start}
-  .workspace-body{padding:16px 18px}
-  .pricing-table{font-size:12px}
-  .pricing-table th,.pricing-table td{padding:8px 10px}
-  .grid-2,.grid-3,.model-family{grid-template-columns:1fr}
-}
-@media(max-width:480px){
-  .intro h1{font-size:24px}
-}
+.sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;width:var(--sidebar-w);display:flex;flex-direction:column;background:var(--bg-dark);color:var(--ink-on-dark);transition:transform .3s cubic-bezier(0.4,0,0.2,1);overflow:hidden;box-shadow:2px 0 12px rgba(0,0,0,0.08)}.sidebar[data-collapsed="true"]{transform:translateX(calc(var(--sidebar-w)*-1));box-shadow:none}.sidebar-inner{height:100%;width:var(--sidebar-w);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-toggle{position:fixed;left:var(--sidebar-w);top:50%;z-index:101;width:20px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.08);border-left:none;border-radius:0 10px 10px 0;color:var(--ink-on-dark-secondary);cursor:pointer;transition:all .3s cubic-bezier(0.4,0,0.2,1);font-size:10px;transform:translateY(-50%);opacity:.7}.sidebar-toggle:hover{opacity:1;color:var(--ink-on-dark);background:var(--bg-dark-card);width:24px}.sidebar[data-collapsed="true"]~.sidebar-toggle{left:0;opacity:.9}.sidebar[data-collapsed="true"]~.sidebar-toggle:hover{left:2px}
+.brand{padding:18px 20px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.06)}.brand-mark{width:32px;height:32px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;font-weight:900;color:white}.brand-text{flex:1;min-width:0}.brand-text strong{display:block;font-size:14px;font-weight:800;letter-spacing:-.02em;color:var(--ink-on-dark)}.brand-text small{display:block;margin-top:1px;color:var(--ink-on-dark-secondary);font-size:10px;font-weight:400}
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px 12px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent}.sidebar-nav::-webkit-scrollbar{width:3px}.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px}
+.sidebar-section-title{padding:14px 12px 6px;color:var(--ink-on-dark-secondary);font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-family:var(--mono)}.sidebar-item{width:100%;display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;color:var(--ink-on-dark);background:transparent;text-align:left;font-size:13px;font-weight:500;transition:all .2s var(--ease);cursor:pointer}.sidebar-item:hover{background:rgba(255,255,255,0.06)}.sidebar-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}.sidebar-item .icon{width:18px;text-align:center;flex-shrink:0;font-size:14px}.sidebar-item .label{flex:1;min-width:0}
+.sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.06)}.sidebar-footer p{font-size:10px;color:var(--ink-on-dark-secondary);line-height:1.5;margin:0}
+.page{min-width:0;min-height:100vh;margin-left:var(--sidebar-w);transition:margin-left .3s var(--ease);overflow-x:hidden}.sidebar[data-collapsed="true"]~.page{margin-left:0}
+.topbar{height:64px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,0.06);background:rgba(250,250,249,0.85);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);position:sticky;top:0;z-index:20}.breadcrumb{display:flex;align-items:center;gap:8px;color:var(--ink-tertiary);font-size:13px}.breadcrumb a{color:var(--ink-tertiary);transition:color .2s}.breadcrumb a:hover{color:var(--ink)}.breadcrumb .sep{color:var(--ink-faint)}.breadcrumb .current{color:var(--ink);font-weight:600}.top-actions{display:flex;align-items:center;gap:8px}.top-icon-btn{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(0,0,0,0.08);border-radius:10px;background:var(--bg-card);cursor:pointer;color:var(--ink-secondary)}.top-icon-btn:hover{background:var(--surface);color:var(--ink)}.top-icon-btn svg{width:16px;fill:none;stroke:currentColor;stroke-width:1.6}
+main{padding:0;min-height:0;max-width:1200px;margin:0 auto;padding:0 20px 40px}
+.hero-section{padding:40px 28px 20px;background:var(--bg)}.hero-section h1{font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:12px;color:var(--ink)}.hero-section .accent{color:var(--accent)}.hero-section p{font-size:16px;color:var(--ink-secondary);max-width:640px;line-height:1.7}.hero-section .hero-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px}.hero-section .hero-badge::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:1px}
+.content-card{padding:28px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius);background:var(--bg-card);margin-bottom:16px;transition:all .25s var(--ease)}.content-card:hover{box-shadow:var(--shadow-md);border-color:rgba(0,0,0,0.1)}.content-card:last-child{margin-bottom:0}.content-card .card-icon{font-size:28px;margin-bottom:12px}.content-card h3{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink)}.content-card h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--ink)}.content-card p{font-size:14px;color:var(--ink-secondary);line-height:1.8;margin-bottom:10px}.content-card p:last-child{margin-bottom:0}.content-card ul{list-style:none;margin:8px 0}.content-card ul li{padding:4px 0;padding-left:18px;position:relative;font-size:14px;color:var(--ink-secondary);line-height:1.7}.content-card ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:600}.content-card code{background:var(--bg-warm);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:13px;color:var(--ink)}
+.step-label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px}.step-label::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:1px}
+.code-block{background:var(--bg-dark);color:var(--ink-on-dark);border-radius:var(--radius-xs);padding:16px;font-family:var(--mono);font-size:13px;line-height:1.6;overflow-x:auto;white-space:pre;margin:12px 0;tab-size:2}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tag{display:inline-block;font-size:11px;padding:3px 8px;border-radius:5px;font-weight:500;margin:1px 2px;line-height:1.4}.tag-accent{background:var(--accent-soft);color:var(--accent)}.tag-blue{background:var(--blue-soft);color:var(--blue)}.tag-green{background:var(--green-soft);color:var(--green)}.tag-purple{background:var(--purple-soft);color:var(--purple)}.tag-teal{background:var(--teal-soft);color:var(--teal)}
+.highlight-box{padding:24px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);background:var(--bg-card);margin-top:16px;border-left:3px solid var(--accent)}.highlight-box h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--ink)}.highlight-box p{font-size:13px;color:var(--ink-secondary);line-height:1.7}
+.pricing-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid rgba(0,0,0,0.06)}.pricing-table{width:100%;border-collapse:collapse;font-size:13px}.pricing-table thead{background:var(--bg-dark)}.pricing-table th{padding:14px 18px;text-align:left;font-weight:600;font-size:12px;color:var(--ink-on-dark);white-space:nowrap}.pricing-table td{padding:12px 18px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--ink-secondary);font-size:13px}.pricing-table tbody tr:hover{background:var(--accent-soft)}.pricing-table .model-name{font-weight:600;color:var(--ink);white-space:nowrap}.pricing-table .price-cell{font-family:var(--mono);font-size:12px;font-weight:500}.price-cheapest{color:var(--green)}.price-expensive{color:var(--accent)}
+.qs-step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid rgba(0,0,0,0.04)}.qs-step:last-child{border-bottom:none}.qs-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);background:var(--bg-card)}.qs-body{flex:1;padding-top:2px}.qs-body h4{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--ink)}.qs-body p{font-size:14px;color:var(--ink-secondary);line-height:1.7;margin-bottom:8px}
+.case-card{padding:24px;border:1px solid rgba(0,0,0,0.06);border-radius:var(--radius-sm);background:var(--bg-card);transition:all .25s var(--ease)}.case-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}.case-card .case-icon{font-size:32px;margin-bottom:8px}.case-card h4{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--ink)}.case-card p{font-size:13px;color:var(--ink-secondary);line-height:1.7;margin-bottom:10px}.case-card .case-tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;margin-bottom:8px;background:var(--accent-soft);color:var(--accent)}
+.tip-box{padding:20px;background:var(--bg-warm);border-radius:var(--radius-sm);margin:12px 0;border:1px solid rgba(0,0,0,0.04)}.tip-box strong{color:var(--ink);display:block;margin-bottom:4px;font-size:14px}.tip-box p{font-size:13px;color:var(--ink-secondary);line-height:1.7;margin:0}
+.workspace-footer{padding:16px 0;margin-top:20px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}.workspace-footer p{font-size:12px;color:var(--ink-tertiary);margin:0}.workspace-footer a{color:var(--ink-secondary);font-weight:500}.workspace-footer a:hover{color:var(--accent)}
+@media(max-width:760px){.sidebar{width:100%;z-index:200;transform:translateX(-100%);box-shadow:24px 0 80px rgba(0,0,0,0.3)}.sidebar[data-collapsed="false"]{transform:translateX(0)}.sidebar[data-collapsed="true"]{transform:translateX(-100%)}.sidebar-toggle{display:none}.page{margin-left:0!important}.topbar{height:57px;padding:0 16px}.mobile-menu-btn{display:flex!important}.hero-section{padding:24px 16px 16px}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.pricing-table{font-size:12px}.pricing-table th,.pricing-table td{padding:8px 10px}main{padding:0 12px 24px}.content-card{padding:20px}}
+@media(max-width:480px){.hero-section h1{font-size:26px}}
+body.dark{--bg:#111816;--bg-warm:#18211f;--bg-card:#1A1A1A;--bg-dark:#0c1211;--bg-dark-card:#182320;--ink:#ecf4ef;--ink-secondary:#9eaaa5;--ink-tertiary:#6b7a74;--surface:#2b3733;--shadow-sm:0 1px 3px rgba(0,0,0,0.2);--shadow-md:0 4px 12px rgba(0,0,0,0.3)}body.dark .topbar{background:rgba(17,24,22,0.85)}body.dark .top-icon-btn{background:var(--bg-card);border-color:rgba(255,255,255,0.08)}body.dark .content-card,body.dark .case-card,body.dark .highlight-box{border-color:rgba(255,255,255,0.06);background:var(--bg-card)}body.dark .code-block{background:var(--bg-dark)}body.dark .pricing-table thead{background:var(--bg-dark)}body.dark .tip-box{background:var(--bg-warm)}
 </style>
 </head>
 <body>
-
 <div class="app-shell">
 
 <!-- ========== Sidebar ========== -->
@@ -303,663 +48,418 @@ body.dark .flow-content code{background:var(--bg-warm);color:var(--ink-on-dark)}
     <div class="brand">
       <div class="brand-mark">D</div>
       <div class="brand-text">
-        <strong>DSH Model Atlas</strong>
-        <small>GrowthOS · 模型工具手册</small>
+        <strong>DSH 完全指南</strong>
+        <small>GrowthOS · 从入门到精通</small>
       </div>
     </div>
-
     <nav class="sidebar-nav">
-      <div class="sidebar-section">
-        <div class="sidebar-section-title">导航</div>
-        <button class="sidebar-item active" data-tab="overview">
-          <span class="icon">◉</span>
-          <span class="label">全景概览</span>
-          <span class="badge">1</span>
-        </button>
-        <button class="sidebar-item" data-tab="providers">
-          <span class="icon">⚡</span>
-          <span class="label">Provider 接入</span>
-          <span class="badge">2</span>
-        </button>
-        <button class="sidebar-item" data-tab="pricing">
-          <span class="icon">💰</span>
-          <span class="label">费用排名</span>
-          <span class="badge">3</span>
-        </button>
-        <button class="sidebar-item" data-tab="recommendation">
-          <span class="icon">🎯</span>
-          <span class="label">场景推荐</span>
-          <span class="badge">4</span>
-        </button>
-        <button class="sidebar-item" data-tab="architecture">
-          <span class="icon">🏗️</span>
-          <span class="label">架构原理</span>
-          <span class="badge">5</span>
-        </button>
-        <button class="sidebar-item" data-tab="plugins">
-          <span class="icon">🧩</span>
-          <span class="label">插件生态</span>
-          <span class="badge">6</span>
-        </button>
-        <button class="sidebar-item" data-tab="quickstart">
-          <span class="icon">🚀</span>
-          <span class="label">快速上手</span>
-          <span class="badge">7</span>
-        </button>
-      </div>
-    </nav>
+      <div class="sidebar-section-title">🚀 入门</div>
+      <button class="sidebar-item" data-tab="quickstart"><span class="icon">⚡</span><span class="label">快速上手</span></button>
+      <button class="sidebar-item active" data-tab="overview"><span class="icon">◉</span><span class="label">全景概览</span></button>
 
-    <div class="sidebar-footer">
-      <p>GrowthOS 学习材料<br>DSH v0.1.0-rc.6</p>
-    </div>
+      <div class="sidebar-section-title">🎯 实战</div>
+      <button class="sidebar-item" data-tab="cases"><span class="icon">💼</span><span class="label">五大实战案例</span></button>
+      <button class="sidebar-item" data-tab="mobile"><span class="icon">📱</span><span class="label">手机部署指南</span></button>
+      <button class="sidebar-item" data-tab="token-save"><span class="icon">💰</span><span class="label">Token 省钱攻略</span></button>
+
+      <div class="sidebar-section-title">🔌 模型</div>
+      <button class="sidebar-item" data-tab="providers"><span class="icon">⚡</span><span class="label">模型接入方式</span></button>
+      <button class="sidebar-item" data-tab="pricing"><span class="icon">📊</span><span class="label">费用排名</span></button>
+      <button class="sidebar-item" data-tab="recommendation"><span class="icon">🎯</span><span class="label">场景推荐</span></button>
+
+      <div class="sidebar-section-title">🏗️ 进阶</div>
+      <button class="sidebar-item" data-tab="architecture"><span class="icon">🏗️</span><span class="label">架构原理</span></button>
+      <button class="sidebar-item" data-tab="plugins"><span class="icon">🧩</span><span class="label">插件生态</span></button>
+    </nav>
+    <div class="sidebar-footer"><p>GrowthOS 学习材料 · DSH v0.1.0-rc.6</p></div>
   </div>
 </aside>
-
-<!-- Sidebar overlay for mobile -->
 <div class="sidebar-overlay" id="sidebarOverlay" style="display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.3);cursor:pointer"></div>
-
-<!-- Sidebar toggle button -->
 <button class="sidebar-toggle" id="sidebarToggle" aria-label="切换侧边栏">◀</button>
 
-<!-- ========== Page ========== -->
 <div class="page">
-
-  <!-- Topbar -->
   <header class="topbar">
     <div class="breadcrumb">
-      <button class="top-icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单" style="display:none;margin-right:4px">
+      <button class="top-icon-btn mobile-menu-btn" id="mobileMenuBtn" style="display:none;margin-right:4px" aria-label="菜单">
         <svg viewBox="0 0 24 24" style="width:18px"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
       </button>
-      <a href="https://start.growthos.cn" target="_blank">GrowthOS</a>
-      <span class="sep">/</span>
-      <span class="current" id="breadcrumbCurrent">DSH Model Atlas</span>
-      <span style="color:var(--ink-tertiary);font-weight:400" id="breadcrumbTab">· 全景概览</span>
+      <a href="https://start.growthos.cn" target="_blank">GrowthOS</a><span class="sep">/</span>
+      <span class="current" id="breadcrumbCurrent">DSH 完全指南</span>
+      <span style="color:var(--ink-tertiary);font-weight:400" id="breadcrumbTab">· 快速上手</span>
     </div>
     <div class="top-actions">
       <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank">
-        <button class="top-icon-btn" aria-label="GitHub">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        </button>
+        <button class="top-icon-btn" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg></button>
       </a>
-      <button class="top-icon-btn" id="themeBtn" aria-label="切换主题">
-        <svg viewBox="0 0 24 24"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"></path><circle cx="12" cy="12" r="4"></circle></svg>
-      </button>
+      <button class="top-icon-btn" id="themeBtn" aria-label="切换主题"><svg viewBox="0 0 24 24"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"></path><circle cx="12" cy="12" r="4"></circle></svg></button>
     </div>
   </header>
 
-  <!-- Main -->
   <main>
-    <!-- Intro -->
-    <section class="intro">
-      <div>
-        <div class="intro-kicker">GrowthOS · DSH 模型工具手册</div>
-        <h1 id="pageTitle">DSH Model Atlas</h1>
-        <p id="pageDesc">全面了解 DSH 可接入的 40+ 模型、6 种 Provider 接入方式、费用排名与场景推荐。</p>
+    <!-- ==================== TAB: Quick Start ==================== -->
+    <div class="tab-content" id="tab-quickstart" style="display:block">
+      <div class="hero-section"><div class="hero-badge">GETTING STARTED</div><h1>5 分钟<span class="accent">快速上手</span> DSH</h1><p>从零开始，不需要任何编程基础。跟着这三步，让 DeepSeek Harness 在你的电脑上跑起来。</p></div>
+      <div class="content-card">
+        <div class="card-icon">📦</div>
+        <h3>第一步：安装 Node.js</h3>
+        <p>DSH 运行在 Node.js 上。去 <a href="https://nodejs.org" target="_blank" style="color:var(--accent);font-weight:600">nodejs.org</a> 下载 LTS 版本（左侧那个），双击安装，一路"下一步"。</p>
+        <div class="tip-box"><strong>💡 验证安装</strong><p>安装完成后，打开终端（Mac 的"终端.app"或 Windows 的"命令提示符"），输入 <code>node --version</code>，如果看到 <code>v18.x.x</code> 或更高的版本号，就说明装好了。</p></div>
       </div>
-      <div class="model-controls">
-        <div class="model-switcher" role="tablist" aria-label="选择视图模式">
-          <button class="active" role="tab" aria-selected="true" data-view="learning">学习模式</button>
-          <button role="tab" aria-selected="false" data-view="reference">速查模式</button>
+      <div class="content-card">
+        <div class="card-icon">🚀</div>
+        <h3>第二步：启动 DSH（只需要一行命令）</h3>
+        <p>在终端里输入以下命令，回车：</p>
+        <div class="code-block">npx @deepseek-ai/dsh web</div>
+        <p>第一次运行会自动下载 DSH，然后启动 Web UI。终端会打印一行地址：</p>
+        <div class="code-block">🌐 Web UI started at http://127.0.0.1:3080</div>
+        <p>用浏览器打开这个地址，你就能看到 DSH 的界面了。</p>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🔑</div>
+        <h3>第三步：配置模型 API Key</h3>
+        <p>在 DSH 界面中，点击右上角的 <strong>设置 → 模型</strong>：</p>
+        <ul>
+          <li><strong>已经有 TokenDance Key？</strong> 在 DeepSeek 卡片里输入你的 API Key，保存</li>
+          <li><strong>还没有 Key？</strong> 去 <a href="https://tokendance.space" target="_blank" style="color:var(--accent);font-weight:600">tokendance.space</a> 注册，获取 API Key</li>
+          <li>保存后，回到首页，新建一个会话，选择模型 <code>deepseek-v4-flash</code>，开始聊天</li>
+        </ul>
+        <div class="tip-box"><strong>🎉 恭喜！</strong><p>你现在已经可以跟 DSH 对话了。试试让它"总结一下这个项目"或"帮我写一个 Python 脚本"。</p></div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">❓</div>
+        <h3>新手常见问题</h3>
+        <ul>
+          <li><strong>端口被占用？</strong> 用 <code>npx @deepseek-ai/dsh web --port 3081</code> 指定其他端口</li>
+          <li><strong>想用其他模型？</strong> 在设置 → 模型 → 添加自定义 Provider，填上你的 API 地址和 Key</li>
+          <li><strong>DSH 是什么？</strong> 一个开源 AI Agent 框架，可以让 AI 读写文件、跑命令、自主完成任务</li>
+          <li><strong>免费吗？</strong> DSH 本身是开源的（MIT 协议），你只需要支付模型 API 的费用</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: Overview ==================== -->
+    <div class="tab-content" id="tab-overview">
+      <div class="hero-section"><div class="hero-badge">OVERVIEW</div><h1>DeepSeek Harness <span class="accent">是什么？</span></h1><p>一句话：一个让 AI 帮你干活的开源框架。你告诉它目标，它自己想办法完成。</p></div>
+      <div class="content-card">
+        <div class="card-icon">🤔</div>
+        <h3>它解决了什么问题？</h3>
+        <p>传统的 AI 对话工具只能"聊天"——你问一句，它答一句。DSH 不一样，它给你一个<strong>虚拟工作台</strong>：</p>
+        <ul>
+          <li><strong>读写你的文件</strong> — 读取项目代码、修改配置文件、创建新文档</li>
+          <li><strong>在终端里跑命令</strong> — 执行 Python 脚本、安装依赖、运行测试</li>
+          <li><strong>搜索互联网</strong> — 查找最新信息、调研竞品、获取实时数据</li>
+          <li><strong>委派子代理</strong> — 把一个复杂任务拆成多个子任务，并行处理</li>
+          <li><strong>记住你的偏好</strong> — 通过持久化技能，跨会话保持一致的行为</li>
+        </ul>
+        <div class="tip-box"><strong>🎯 你可以用它做什么？</strong><p>代码审查、自动写测试、数据分析、文档生成、项目管理、定时任务……任何你不想亲自做的重复性工作。</p></div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🧩</div>
+        <h3>为什么选择 DSH？</h3>
+        <div class="grid-2" style="margin-top:12px">
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:14px;color:var(--ink)">✅ 开源免费</strong><p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">MIT 协议，代码全公开，可自由修改和分发</p></div>
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:14px;color:var(--ink)">✅ 模型自由</strong><p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">想用哪个模型用哪个，不受厂商锁定</p></div>
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:14px;color:var(--ink)">✅ 插件生态</strong><p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">7000+ 社区插件，功能无限扩展</p></div>
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:14px;color:var(--ink)">✅ 本地运行</strong><p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">数据在你自己电脑上，不经过第三方服务器</p></div>
         </div>
       </div>
-    </section>
-
-    <!-- Workspace -->
-    <section class="workspace">
-
-      <!-- ==================== TAB: Overview ==================== -->
-      <div class="tab-content active" id="tab-overview">
-        <div class="workspace-head">
-          <div>
-            <div class="step-label">Overview</div>
-            <h2>DSH 模型全景概览</h2>
-          </div>
-          <p>DeepSeek Harness 可通过多种方式接入几乎所有主流大语言模型</p>
+      <div class="content-card">
+        <div class="card-icon">🌐</div>
+        <h3>生态全景</h3>
+        <div class="grid-4" style="margin-top:12px">
+          <div style="padding:16px;background:var(--accent-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--accent)">7,400+</div><div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">插件仓库</div></div>
+          <div style="padding:16px;background:var(--blue-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--blue)">1,034</div><div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">兼容可用</div></div>
+          <div style="padding:16px;background:var(--green-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--green)">100+</div><div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">内置插件</div></div>
+          <div style="padding:16px;background:var(--purple-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--purple)">88K+</div><div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">Top 1 插件 ⭐</div></div>
         </div>
-        <div class="workspace-body">
+      </div>
+    </div>
 
-          <!-- Learning Mode -->
-          <div class="mode-learning">
-            <div class="flow-stage">
-              <div class="stage-label"><span>◉</span><div><strong>DSH 能接入哪些模型？</strong></div></div>
-              <div class="flow-content">
-                <p>DSH 的模型接入层 <code>dsh-llm-pi-ai</code> 兼容 <strong>OpenAI Chat Completions 协议</strong>，凡是支持该协议的 API 均可即插即用。从类别上分为：</p>
-                <ul>
-                  <li><strong>内置 Provider</strong> — DeepSeek（原生协议）、Anthropic、OpenAI、Azure、Bedrock、Vertex、Codex</li>
-                  <li><strong>自定义 OpenAI 兼容</strong> — 任意兼容 OpenAI 格式的 API 端点（Grok、Together AI、Groq、vLLM、Ollama 等）</li>
-                  <li><strong>聚合网关</strong> — 通过 TokenDance 等聚合平台，一次接入数十个模型（当前使用的方案）</li>
-                  <li><strong>本地模型</strong> — 通过 Ollama / vLLM 本地部署，暴露 OpenAI 兼容接口后接入</li>
-                </ul>
-              </div>
-            </div>
+    <!-- ==================== TAB: 5 Cases ==================== -->
+    <div class="tab-content" id="tab-cases">
+      <div class="hero-section"><div class="hero-badge">PRACTICAL CASES</div><h1><span class="accent">五大实战案例</span> 保姆级教学</h1><p>从简单到复杂，每个案例都配有完整操作步骤，跟着做就能学会。</p></div>
+      <div class="grid-2">
+        <div class="case-card"><div class="case-icon">📝</div><span class="case-tag">新手友好 · 5 分钟</span><h4>案例一：自动代码审查</h4><p>把你的项目目录设为工作区，然后对 DSH 说："<strong>审查这个项目的代码，找出潜在 bug 和安全隐患</strong>"。DSH 会读取所有文件，逐行分析，输出报告。</p><div class="tip-box"><strong>操作步骤</strong><p>1. 点击"选择工作区"选中项目目录 → 2. 新建会话 → 3. 输入上面那句话 → 4. 等待 DSH 分析完成</p></div></div>
+        <div class="case-card"><div class="case-icon">✍️</div><span class="case-tag">内容创作 · 10 分钟</span><h4>案例二：AI 辅助写作</h4><p>让 DSH 帮你写一篇完整的博客文章："<strong>帮我写一篇关于 AI Agent 的科普文章，包含 3 个实际案例，2000 字左右，输出到 blog.md</strong>"。DSH 会搜索资料、撰写内容、保存文件。</p><div class="tip-box"><strong>进阶技巧</strong><p>先让 DSH 列大纲，确认后再写全文，质量更高。</p></div></div>
+        <div class="case-card"><div class="case-icon">📊</div><span class="case-tag">数据分析 · 10 分钟</span><h4>案例三：数据分析报告</h4><p>丢一个 CSV 文件给 DSH："<strong>分析这个销售数据，找出增长趋势、异常值和改进建议，生成一个 HTML 报告</strong>"。DSH 会写 Python 代码、跑分析、生成可视化报告。</p></div>
+        <div class="case-card"><div class="case-icon">🤖</div><span class="case-tag">自动化 · 15 分钟</span><h4>案例四：定时任务助手</h4><p>让 DSH 帮你设置一个定时任务："<strong>每天早上 9 点，检查我的 GitHub 仓库的 Issue，汇总未回复的问题，发到本地文件</strong>"。DSH 会创建脚本并设置定时器。</p></div>
+        <div class="case-card" style="grid-column:1/-1"><div class="case-icon">🧠</div><span class="case-tag">进阶 · 20 分钟</span><h4>案例五：多 Agent 协作研究</h4><p>让 DSH 启动多个子代理同时工作："<strong>我要研究 AI 在医疗领域的应用，分三个方向同时调研：诊断、药物发现、患者管理，每个方向出一份报告，最后合并成一份完整综述</strong>"。DSH 会自动委派子代理并行工作。</p><div class="tip-box"><strong>效果</strong><p>三个子代理同时搜索和分析，比一个人工调研快 3 倍。</p></div></div>
+      </div>
+    </div>
 
-            <div class="flow-stage" style="margin-top:14px">
-              <div class="stage-label"><span>⚡</span><div><strong>当前配置（TokenDance）已接入的 40+ 模型</strong></div></div>
-              <div class="flow-content">
-                <p>通过 <code>~/.dsh/settings.yaml</code> 配置，以下模型已就绪可在 Web UI 中选择：</p>
-                <div class="model-family">
-                  <div><strong>DeepSeek 系列</strong><ul><li>DeepSeek V4 Flash ($0.50/M)</li><li>DeepSeek V4 Pro Preview</li><li>DeepSeek V3.2</li><li>DeepSeek V3 0324</li></ul></div>
-                  <div><strong>Qwen 系列</strong><ul><li>Qwen3.8 Max (2.4T MoE)</li><li>Qwen3.7 Max / Plus</li><li>Qwen3.6 Plus</li><li>Qwen3.5 Plus / Flash</li><li>Qwen3.5-35B-A3B</li><li>Qwen3 30B A3B</li><li>Qwen3 Max</li></ul></div>
-                  <div><strong>GLM 系列</strong><ul><li>GLM 5.2 (1M 上下文)</li><li>GLM 5.1</li><li>GLM 5</li><li>GLM 4.7</li></ul></div>
-                  <div><strong>Kimi 系列</strong><ul><li>Kimi K3 (2.8T 参数)</li><li>Kimi K2.7 Code</li><li>Kimi K2.6</li><li>Kimi K2.5</li></ul></div>
-                  <div><strong>MiniMax / Seed</strong><ul><li>MiniMax M3 (1M 上下文)</li><li>MiniMax M2.7 / M2.5</li><li>Seed 2.1 Pro / Turbo</li><li>Seed 2.0 Pro</li></ul></div>
-                  <div><strong>其他</strong><ul><li>Step 3.7 Flash / 3.5 Flash</li><li>Ling 3.0 Flash</li><li>Tencent Hy3</li><li>美团 LongCat 2.0</li><li>Dots3 Note Preview</li></ul></div>
-                </div>
-              </div>
-            </div>
+    <!-- ==================== TAB: Mobile ==================== -->
+    <div class="tab-content" id="tab-mobile">
+      <div class="hero-section"><div class="hero-badge">MOBILE</div><h1>把 DSH <span class="accent">装到你的手机</span>上</h1><p>让 AI 在你的口袋里也能工作，随时随地。</p></div>
+      <div class="content-card">
+        <div class="card-icon">📱</div>
+        <h3>方案一：Termux（Android）</h3>
+        <p>Android 手机可以通过 Termux 运行完整的 DSH。</p>
+        <div class="code-block"># 1. 安装 Termux（F-Droid 版本）
+# 2. 安装 Node.js
+pkg update && pkg install nodejs-lts git
+
+# 3. 启动 DSH
+npx @deepseek-ai/dsh web --port 3080
+
+# 4. 在同一 Wi-Fi 下，用电脑浏览器访问
+# http://手机IP:3080</div>
+        <div class="tip-box"><strong>💡 提示</strong><p>Termux 的 F-Droid 版本比 Google Play 版本更新更及时，建议从 F-Droid 安装。</p></div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🌐</div>
+        <h3>方案二：远程访问（手机 + 电脑）</h3>
+        <p>电脑上跑 DSH，手机上通过浏览器访问——最常见也最实用的方案。</p>
+        <div class="grid-2" style="margin-top:12px">
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs)"><strong style="font-size:14px;color:var(--ink)">同一 WiFi</strong><p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">电脑启动 DSH 后，在手机浏览器输入 <code>http://电脑IP:3080</code></p></div>
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs)"><strong style="font-size:14px;color:var(--ink)">外网访问</strong><p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">使用 Tailscale 或 Cloudflare Tunnel 安全暴露到外网</p></div>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">⚡</div>
+        <h3>方案三：轻量 API 客户端（推荐）</h3>
+        <p>手机上装一个 API 客户端（如 <strong>Terminal AI</strong> 或 <strong>ChatBox</strong>），配置你的 API Key，就能在手机上直接调用模型，不需要跑 DSH 服务端。</p>
+        <ul>
+          <li>体积小，省电，不需要后台进程</li>
+          <li>支持所有 OpenAI 兼容的 API</li>
+          <li>适合碎片化时间使用：通勤、排队时快速提问</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: Token Save ==================== -->
+    <div class="tab-content" id="tab-token-save">
+      <div class="hero-section"><div class="hero-badge">COST OPTIMIZATION</div><h1>Token 越来越贵，<span class="accent">怎么省钱？</span></h1><p>用最少的 Token 获取最大的智能，这是每个 DSH 用户的必修课。</p></div>
+      <div class="content-card">
+        <div class="card-icon">💰</div>
+        <h3>策略一：选对模型，立省 90%</h3>
+        <p>不同模型的价格差异巨大，从 $0.50/M 到 $150/M 不等。核心原则：</p>
+        <div class="grid-3" style="margin-top:12px">
+          <div style="padding:14px;background:var(--green-soft);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:13px;color:var(--green)">日常对话</strong><p style="font-size:12px;color:var(--ink-secondary);margin-top:4px">DeepSeek V4 Flash<br>$0.50/M<br>平均省 96%</p></div>
+          <div style="padding:14px;background:var(--blue-soft);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:13px;color:var(--blue)">编码任务</strong><p style="font-size:12px;color:var(--ink-secondary);margin-top:4px">Qwen3.8 Max<br>$4.00/M<br>不如 Flash 时用</p></div>
+          <div style="padding:14px;background:var(--purple-soft);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)"><strong style="font-size:13px;color:var(--purple)">深度推理</strong><p style="font-size:12px;color:var(--ink-secondary);margin-top:4px">Kimi K3 / V4 Pro<br>$5.00/M<br>只在必要时用</p></div>
+        </div>
+        <div class="tip-box" style="margin-top:12px"><strong>🎯 黄金法则</strong><p>80% 的任务用 DeepSeek V4 Flash（$0.50/M），15% 用 Qwen3.8 Max（$4.00/M），5% 用 Kimi K3（$5.00/M）。综合成本比全部用 GPT-4o 低 95%。</p></div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">⏰</div>
+        <h3>策略二：利用峰谷定价</h3>
+        <p>DeepSeek 采用峰谷定价——闲时（非高峰时段）价格减半：</p>
+        <ul>
+          <li><strong>闲时（非高峰）</strong>：DeepSeek V4 Flash 仅 $0.25/M</li>
+          <li><strong>批量任务安排在闲时执行</strong>，成本直接减半</li>
+          <li>DSH 的 headless 模式支持脚本化批量提交，适合定时跑任务</li>
+        </ul>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">📝</div>
+        <h3>策略三：减少上下文长度</h3>
+        <p>Token 费用 = 输入 Token + 输出 Token。输入 Token 通常占大头，因为包含历史对话和上下文。</p>
+        <ul>
+          <li><strong>定期清理会话历史</strong> — 长会话会积累大量 Token</li>
+          <li><strong>使用精确指令</strong> — 避免在 prompt 中包含无关信息</li>
+          <li><strong>利用 DSH 的上下文压缩</strong> — 使用 <code>dsh-context</code> 或 <code>dsh-auto-compact</code> 插件自动压缩</li>
+          <li><strong>分而治之</strong> — 大任务拆成小任务，每个子任务用独立的短会话</li>
+        </ul>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🆓</div>
+        <h3>策略四：善用免费额度</h3>
+        <div class="grid-2" style="margin-top:12px">
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+            <strong style="font-size:14px;color:var(--ink)">Groq</strong>
+            <p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">免费使用 Llama 3.3 70B，速度极快。适合简单任务和批量处理。</p>
+            <div class="code-block" style="margin:0;font-size:11px;padding:10px;margin-top:8px">Provider: Groq
+Base URL: https://api.groq.com/openai/v1
+Models: llama-3.3-70b-versatile</div>
           </div>
-
-          <!-- Quick Reference Mode -->
-          <div class="mode-ref">
-            <div class="ref-section">
-              <div class="ref-section-title">接入方式速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">内置 Provider</span><span class="ref-val">DeepSeek / Anthropic / OpenAI / Azure / Bedrock / Vertex / Codex</span></div>
-                <div class="ref-item"><span class="ref-key">自定义 Provider</span><span class="ref-val">任意 OpenAI 兼容端点，在 settings.yaml 中配置</span></div>
-                <div class="ref-item"><span class="ref-key">本地模型</span><span class="ref-val">Ollama / vLLM 暴露 OpenAI 兼容接口</span></div>
-                <div class="ref-item"><span class="ref-key">聚合网关</span><span class="ref-val">TokenDance 等，一次接入数十模型</span></div>
-              </div>
-            </div>
-            <div class="ref-section">
-              <div class="ref-section-title">模型列表速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">DeepSeek</span><span class="ref-val">V4 Flash <code>$0.50</code> · V4 Pro · V3.2 · V3 0324</span></div>
-                <div class="ref-item"><span class="ref-key">Qwen</span><span class="ref-val">3.8 Max · 3.7 Max/Plus · 3.6 Plus · 3.5 Plus/Flash · 3-30B</span></div>
-                <div class="ref-item"><span class="ref-key">GLM</span><span class="ref-val">5.2 · 5.1 · 5 · 4.7</span></div>
-                <div class="ref-item"><span class="ref-key">Kimi</span><span class="ref-val">K3 · K2.7 Code · K2.6 · K2.5</span></div>
-                <div class="ref-item"><span class="ref-key">MiniMax</span><span class="ref-val">M3 · M2.7 · M2.5</span></div>
-                <div class="ref-item"><span class="ref-key">其他</span><span class="ref-val">Step 3.7/3.5 Flash · Ling 3.0 · Hy3 · LongCat 2.0</span></div>
-              </div>
-            </div>
+          <div style="padding:16px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
+            <strong style="font-size:14px;color:var(--ink)">TokenDance 新用户</strong>
+            <p style="font-size:13px;color:var(--ink-secondary);margin-top:4px">新注册通常赠送体验额度，可用于测试各模型效果。</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- ==================== TAB: Providers ==================== -->
-      <div class="tab-content" id="tab-providers">
-        <div class="workspace-head"><div><div class="step-label">Providers</div><h2>Provider 接入方式详解</h2></div><p>DSH 支持 6 种不同的模型接入方式</p></div>
-        <div class="workspace-body">
-          <div class="mode-learning">
-            <div class="grid-2">
-              <div class="provider-card">
-                <div class="provider-card-header"><div class="provider-card-icon">⚡</div><div><div class="provider-name">DeepSeek 原生 <span class="provider-badge">原生协议</span></div></div></div>
-                <div class="provider-detail">最简配置，安装后直接用。DSH 原生支持 DeepSeek 协议，Web UI 填入 API Key 即可自动获取模型列表。</div>
-                <div class="provider-code">Web UI: 设置 → 模型 → DeepSeek 卡片 → 输入 API Key → 保存</div>
-              </div>
-              <div class="provider-card">
-                <div class="provider-card-header"><div class="provider-card-icon">📦</div><div><div class="provider-name">内置 Provider 目录 <span class="provider-badge">Anthropic / OpenAI</span></div></div></div>
-                <div class="provider-detail">点"添加 Provider"，选择服务商，填写凭据即完成配置。Azure 需要 api-version，Codex 使用 OAuth 认证。</div>
-                <div class="provider-code">Web UI: 设置 → 模型 → 添加 Provider → 选择 → 填 Key → 保存</div>
-              </div>
-              <div class="provider-card">
-                <div class="provider-card-header"><div class="provider-card-icon">🔧</div><div><div class="provider-name">自定义 Provider <span class="provider-badge">openai-completions</span></div></div></div>
-                <div class="provider-detail">任意 OpenAI 兼容 API 端点，手动填写 Provider ID、Base URL 和模型列表。</div>
-                <div class="provider-code">llm-pi-ai:
+    <!-- ==================== TAB: Providers ==================== -->
+    <div class="tab-content" id="tab-providers">
+      <div class="hero-section"><div class="hero-badge">PROVIDERS</div><h1>模型<span class="accent">接入方式</span>全解析</h1><p>DSH 支持 6 种模型接入方式，覆盖所有主流场景。</p></div>
+      <div class="grid-2">
+        <div class="content-card"><div class="card-icon">⚡</div><h4>DeepSeek 原生</h4><p>最简配置，安装后直接使用。DSH 原生支持 DeepSeek 协议，填入 API Key 即可。</p><div class="code-block" style="margin:0;font-size:12px;padding:12px">Web UI: 设置 → 模型 → DeepSeek → 输入 Key → 保存</div></div>
+        <div class="content-card"><div class="card-icon">📦</div><h4>内置 Provider 目录</h4><p>Anthropic、OpenAI、Azure、Bedrock、Vertex、Codex 等一键配置。</p><div class="code-block" style="margin:0;font-size:12px;padding:12px">点"添加 Provider"→ 选择服务商 → 填 Key</div></div>
+        <div class="content-card"><div class="card-icon">🔧</div><h4>自定义 Provider</h4><p>任意 OpenAI 兼容 API 端点：Grok、Together AI、Groq、vLLM、Ollama 等。</p><div class="code-block" style="margin:0;font-size:12px;padding:12px"># ~/.dsh/settings.yaml
+llm-pi-ai:
   providers:
     groq:
-      displayName: Groq
       apiKeyEnv: GROQ_API_KEY
       api: openai-completions
       baseURL: https://api.groq.com/openai/v1
       models:
-        - id: llama-3.3-70b-versatile</div>
-              </div>
-              <div class="provider-card">
-                <div class="provider-card-header"><div class="provider-card-icon">🎨</div><div><div class="provider-name">多模态配置 <span class="provider-badge">text + image</span></div></div></div>
-                <div class="provider-detail">视觉模型需显式声明 input 模态。支持图片输入的模型会在发送前校验。</div>
-                <div class="provider-code">llm-pi-ai:
-  providers:
-    my-gateway:
-      models:
-        - id: vision-model
-          input: [text, image]</div>
-              </div>
-              <div class="provider-card">
-                <div class="provider-card-header"><div class="provider-card-icon">🔄</div><div><div class="provider-name">聚合网关 <span class="provider-badge">TokenDance</span></div></div></div>
-                <div class="provider-detail">你当前使用的方案。通过一个 API Key 接入数十个模型，统一计费和管理。</div>
-                <div class="provider-code">baseURL: https://tokendance.space/gateway/v1
-api: openai-completions
-models: [deepseek-v4-flash, qwen3.8-max,
-  glm-5.2, kimi-k3, minimax-m3, ...]</div>
-              </div>
-              <div class="provider-card">
-                <div class="provider-card-header"><div class="provider-card-icon">🖥️</div><div><div class="provider-name">本地模型 <span class="provider-badge">Ollama / vLLM</span></div></div></div>
-                <div class="provider-detail">本地部署开源模型后，通过 Ollama 或 vLLM 暴露 OpenAI 兼容接口。</div>
-                <div class="provider-code">llm-pi-ai:
+        - id: llama-3.3-70b-versatile</div></div>
+        <div class="content-card"><div class="card-icon">🎨</div><h4>多模态配置</h4><p>视觉模型需声明 input 模态，支持 text + image 输入。</p><div class="code-block" style="margin:0;font-size:12px;padding:12px">models:
+  - id: vision-model
+    input: [text, image]</div></div>
+        <div class="content-card"><div class="card-icon">🔄</div><h4>聚合网关（TokenDance）</h4><p>一个 Key 接入数十个模型，统一计费。当前你使用的方案。</p></div>
+        <div class="content-card"><div class="card-icon">🖥️</div><h4>本地模型</h4><p>通过 Ollama / vLLM 本地部署开源模型，暴露 OpenAI 兼容接口。</p><div class="code-block" style="margin:0;font-size:12px;padding:12px">llm-pi-ai:
   providers:
     ollama:
       api: openai-completions
       baseURL: http://localhost:11434/v1
       models:
-        - id: llama3.3</div>
-              </div>
-            </div>
-          </div>
-          <div class="mode-ref">
-            <div class="ref-section">
-              <div class="ref-section-title">Provider 配置速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">DeepSeek</span><span class="ref-val">Web UI 填 Key 即可，原生协议自动发现模型</span></div>
-                <div class="ref-item"><span class="ref-key">Anthropic</span><span class="ref-val">添加 Provider → Anthropic → 填 API Key</span></div>
-                <div class="ref-item"><span class="ref-key">自定义</span><span class="ref-val"><code>settings.yaml</code> 中配置 baseURL / apiKeyEnv / models</span></div>
-                <div class="ref-item"><span class="ref-key">多模态</span><span class="ref-val">模型添加 <code>input: [text, image]</code></span></div>
-                <div class="ref-item"><span class="ref-key">凭据</span><span class="ref-val">环境变量 <code>apiKeyEnv</code> 或 Web UI 保存（只写不读）</span></div>
-              </div>
-            </div>
-          </div>
+        - id: llama3.3</div></div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: Pricing ==================== -->
+    <div class="tab-content" id="tab-pricing">
+      <div class="hero-section"><div class="hero-badge">PRICING</div><h1>模型<span class="accent">费用排名</span></h1><p>23 款主流模型按每百万 Token 价格排序，从最便宜到最贵。</p></div>
+      <div class="content-card">
+        <div class="pricing-wrap">
+          <table class="pricing-table">
+            <thead><tr><th>#</th><th>模型</th><th>提供商</th><th>输入 $/1M</th><th>输出 $/1M</th><th>特点</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><span class="model-name">Llama 3.3 70B</span></td><td>Groq</td><td class="price-cell price-cheapest">$0.59</td><td class="price-cell price-cheapest">$0.79</td><td><span class="tag tag-green">极速</span><span class="tag tag-green">免费额度</span></td></tr>
+              <tr><td>2</td><td><span class="model-name">DeepSeek V4 Flash</span></td><td>DeepSeek</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-accent">官方推荐</span><span class="tag tag-green">闲时半价</span></td></tr>
+              <tr><td>3</td><td><span class="model-name">Qwen3-30B-A3B</span></td><td>Alibaba</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-green">3B 激活</span></td></tr>
+              <tr><td>4</td><td><span class="model-name">Step 3.5 Flash</span></td><td>StepFun</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-green">MoE 110B</span></td></tr>
+              <tr><td>5</td><td><span class="model-name">GLM 4.5 Air</span></td><td>Z.ai</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-purple">混合推理</span></td></tr>
+              <tr><td>6</td><td><span class="model-name">Ling 3.0 Flash</span></td><td>Ling</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-accent">Agent 适配</span></td></tr>
+              <tr><td>7</td><td><span class="model-name">DeepSeek V3.2</span></td><td>DeepSeek</td><td class="price-cell">$1.00</td><td class="price-cell">$1.00</td><td><span class="tag tag-purple">稀疏注意力</span></td></tr>
+              <tr><td>8</td><td><span class="model-name">Qwen3.5 Flash</span></td><td>Alibaba</td><td class="price-cell">$1.00</td><td class="price-cell">$1.00</td><td><span class="tag tag-green">1M 上下文</span></td></tr>
+              <tr><td>9</td><td><span class="model-name">Step 3.7 Flash</span></td><td>StepFun</td><td class="price-cell">$1.00</td><td class="price-cell">$1.00</td><td><span class="tag tag-teal">多模态</span></td></tr>
+              <tr><td>10</td><td><span class="model-name">Seed 2.0 Lite</span></td><td>ByteDance</td><td class="price-cell">$1.50</td><td class="price-cell">$1.50</td><td><span class="tag tag-green">256K 上下文</span></td></tr>
+              <tr><td>11</td><td><span class="model-name">Qwen3.5 Plus</span></td><td>Alibaba</td><td class="price-cell">$2.00</td><td class="price-cell">$2.00</td><td><span class="tag tag-blue">推荐</span></td></tr>
+              <tr><td>12</td><td><span class="model-name">GLM 5</span></td><td>Z.ai</td><td class="price-cell">$2.50</td><td class="price-cell">$2.50</td><td><span class="tag tag-accent">Agent 旗舰</span></td></tr>
+              <tr><td>13</td><td><span class="model-name">Kimi K2.5</span></td><td>Moonshot AI</td><td class="price-cell">$2.50</td><td class="price-cell">$2.50</td><td><span class="tag tag-teal">多模态</span></td></tr>
+              <tr><td>14</td><td><span class="model-name">MiniMax M2.5</span></td><td>MiniMax</td><td class="price-cell">$2.50</td><td class="price-cell">$2.50</td><td><span class="tag tag-accent">办公自动化</span></td></tr>
+              <tr><td>15</td><td><span class="model-name">DeepSeek V4 Pro</span></td><td>DeepSeek</td><td class="price-cell">$4.00</td><td class="price-cell">$4.00</td><td><span class="tag tag-accent">Agent 旗舰</span></td></tr>
+              <tr><td>16</td><td><span class="model-name">Qwen3.8 Max</span></td><td>Alibaba</td><td class="price-cell">$4.00</td><td class="price-cell">$4.00</td><td><span class="tag tag-blue">2.4T MoE</span></td></tr>
+              <tr><td>17</td><td><span class="model-name">Kimi K3</span></td><td>Moonshot AI</td><td class="price-cell">$5.00</td><td class="price-cell">$5.00</td><td><span class="tag tag-purple">2.8T 参数</span></td></tr>
+              <tr><td>18</td><td><span class="model-name">Seed 2.1 Pro</span></td><td>ByteDance</td><td class="price-cell">$5.00</td><td class="price-cell">$5.00</td><td><span class="tag tag-accent">Coding Agent</span></td></tr>
+              <tr><td>19</td><td><span class="model-name">GLM 5.2</span></td><td>Z.ai</td><td class="price-cell">$6.00</td><td class="price-cell">$6.00</td><td><span class="tag tag-purple">1M 上下文</span></td></tr>
+              <tr><td>20</td><td><span class="model-name">MiniMax M3</span></td><td>MiniMax</td><td class="price-cell">$8.00</td><td class="price-cell">$8.00</td><td><span class="tag tag-teal">多模态 1M</span></td></tr>
+              <tr><td>21</td><td><span class="model-name">Claude Sonnet 4.5</span></td><td>Anthropic</td><td class="price-cell">$15.00</td><td class="price-cell price-expensive">$75.00</td><td><span class="tag tag-accent">Agent</span></td></tr>
+              <tr><td>22</td><td><span class="model-name">GPT-4o</span></td><td>OpenAI</td><td class="price-cell">$10.00</td><td class="price-cell price-expensive">$30.00</td><td><span class="tag tag-blue">通用旗舰</span></td></tr>
+              <tr><td>23</td><td><span class="model-name">Claude Opus 4.6</span></td><td>Anthropic</td><td class="price-cell price-expensive">$30.00</td><td class="price-cell price-expensive">$150.00</td><td><span class="tag tag-purple">顶级推理</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
 
-      <!-- ==================== TAB: Pricing ==================== -->
-      <div class="tab-content" id="tab-pricing">
-        <div class="workspace-head"><div><div class="step-label">Pricing</div><h2>模型费用排名</h2></div><p>按输入/输出每百万 Token 综合排序</p></div>
-        <div class="workspace-body">
-          <div class="pricing-wrap">
-            <table class="pricing-table">
-              <thead><tr><th>#</th><th>模型</th><th>提供商</th><th>输入 $/1M</th><th>输出 $/1M</th><th>特点</th></tr></thead>
-              <tbody>
-                <tr><td>1</td><td><span class="model-name">Llama 3.3 70B</span></td><td>Groq</td><td class="price-cell price-cheapest">$0.59</td><td class="price-cell price-cheapest">$0.79</td><td><span class="tag tag-fast">极速</span><span class="tag tag-cheap">免费额度</span></td></tr>
-                <tr><td>2</td><td><span class="model-name">DeepSeek V4 Flash</span></td><td>DeepSeek</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-agent">Agent</span><span class="tag tag-cheap">闲时半价</span></td></tr>
-                <tr><td>3</td><td><span class="model-name">Qwen3-30B-A3B</span></td><td>Alibaba</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-fast">3B 激活</span></td></tr>
-                <tr><td>4</td><td><span class="model-name">Step 3.5 Flash</span></td><td>StepFun</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-fast">MoE 110B</span></td></tr>
-                <tr><td>5</td><td><span class="model-name">GLM 4.5 Air</span></td><td>Z.ai</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-reasoning">混合推理</span></td></tr>
-                <tr><td>6</td><td><span class="model-name">Ling 3.0 Flash</span></td><td>Ling</td><td class="price-cell price-cheapest">$0.50</td><td class="price-cell price-cheapest">$0.50</td><td><span class="tag tag-agent">Agent 适配</span></td></tr>
-                <tr><td>7</td><td><span class="model-name">DeepSeek V3.2</span></td><td>DeepSeek</td><td class="price-cell">$1.00</td><td class="price-cell">$1.00</td><td><span class="tag tag-reasoning">稀疏注意力</span></td></tr>
-                <tr><td>8</td><td><span class="model-name">Qwen3.5 Flash</span></td><td>Alibaba</td><td class="price-cell">$1.00</td><td class="price-cell">$1.00</td><td><span class="tag tag-fast">1M 上下文</span></td></tr>
-                <tr><td>9</td><td><span class="model-name">Step 3.7 Flash</span></td><td>StepFun</td><td class="price-cell">$1.00</td><td class="price-cell">$1.00</td><td><span class="tag tag-vision">多模态</span></td></tr>
-                <tr><td>10</td><td><span class="model-name">Seed 2.0 Lite</span></td><td>ByteDance</td><td class="price-cell">$1.50</td><td class="price-cell">$1.50</td><td><span class="tag tag-fast">256K 上下文</span></td></tr>
-                <tr><td>11</td><td><span class="model-name">Qwen3.5 Plus</span></td><td>Alibaba</td><td class="price-cell">$2.00</td><td class="price-cell">$2.00</td><td><span class="tag tag-popular">推荐</span></td></tr>
-                <tr><td>12</td><td><span class="model-name">GLM 5</span></td><td>Z.ai</td><td class="price-cell">$2.50</td><td class="price-cell">$2.50</td><td><span class="tag tag-agent">Agent 旗舰</span></td></tr>
-                <tr><td>13</td><td><span class="model-name">Kimi K2.5</span></td><td>Moonshot AI</td><td class="price-cell">$2.50</td><td class="price-cell">$2.50</td><td><span class="tag tag-vision">多模态</span></td></tr>
-                <tr><td>14</td><td><span class="model-name">MiniMax M2.5</span></td><td>MiniMax</td><td class="price-cell">$2.50</td><td class="price-cell">$2.50</td><td><span class="tag tag-agent">办公自动化</span></td></tr>
-                <tr><td>15</td><td><span class="model-name">DeepSeek V4 Pro</span></td><td>DeepSeek</td><td class="price-cell">$4.00</td><td class="price-cell">$4.00</td><td><span class="tag tag-agent">Agent 旗舰</span></td></tr>
-                <tr><td>16</td><td><span class="model-name">Qwen3.8 Max</span></td><td>Alibaba</td><td class="price-cell">$4.00</td><td class="price-cell">$4.00</td><td><span class="tag tag-popular">2.4T MoE</span></td></tr>
-                <tr><td>17</td><td><span class="model-name">Kimi K3</span></td><td>Moonshot AI</td><td class="price-cell">$5.00</td><td class="price-cell">$5.00</td><td><span class="tag tag-reasoning">2.8T 参数</span></td></tr>
-                <tr><td>18</td><td><span class="model-name">Seed 2.1 Pro</span></td><td>ByteDance</td><td class="price-cell">$5.00</td><td class="price-cell">$5.00</td><td><span class="tag tag-agent">Coding Agent</span></td></tr>
-                <tr><td>19</td><td><span class="model-name">GLM 5.2</span></td><td>Z.ai</td><td class="price-cell">$6.00</td><td class="price-cell">$6.00</td><td><span class="tag tag-reasoning">1M 上下文</span></td></tr>
-                <tr><td>20</td><td><span class="model-name">MiniMax M3</span></td><td>MiniMax</td><td class="price-cell">$8.00</td><td class="price-cell">$8.00</td><td><span class="tag tag-vision">多模态 1M</span></td></tr>
-                <tr><td>21</td><td><span class="model-name">Claude Sonnet 4.5</span></td><td>Anthropic</td><td class="price-cell">$15.00</td><td class="price-cell price-expensive">$75.00</td><td><span class="tag tag-agent">Agent</span></td></tr>
-                <tr><td>22</td><td><span class="model-name">GPT-4o</span></td><td>OpenAI</td><td class="price-cell">$10.00</td><td class="price-cell price-expensive">$30.00</td><td><span class="tag tag-popular">通用旗舰</span></td></tr>
-                <tr><td>23</td><td><span class="model-name">Claude Opus 4.6</span></td><td>Anthropic</td><td class="price-cell price-expensive">$30.00</td><td class="price-cell price-expensive">$150.00</td><td><span class="tag tag-reasoning">顶级推理</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p style="margin-top:14px;font-size:12px;color:var(--ink-tertiary);line-height:1.7">💡 <strong>价格说明：</strong>以上为官方标准定价。实际使用中聚合网关可能有自己的定价策略。DeepSeek 采用峰谷定价（闲时半价），Groq 提供免费额度。</p>
+    <!-- ==================== TAB: Recommendation ==================== -->
+    <div class="tab-content" id="tab-recommendation">
+      <div class="hero-section"><div class="hero-badge">RECOMMENDATION</div><h1>场景<span class="accent">推荐</span>与选型</h1><p>不同任务用不同模型，各取所长，成本最优。</p></div>
+      <div class="grid-3">
+        <div class="content-card"><div class="card-icon">💰</div><h4>极致性价比</h4><p>日常对话、简单任务、批量处理</p><ul><li><strong>DeepSeek V4 Flash</strong> — $0.50/M</li><li><strong>Qwen3-30B-A3B</strong> — 3B 激活极速</li><li><strong>Ling 3.0 Flash</strong> — Agent 友好</li></ul></div>
+        <div class="content-card"><div class="card-icon">🤖</div><h4>Agent 任务首选</h4><p>多步推理、工具调用、代码生成</p><ul><li><strong>DeepSeek V4 Flash</strong> — 官方推荐</li><li><strong>Qwen3.8 Max</strong> — 2.4T MoE 旗舰</li><li><strong>GLM 5.2</strong> — 1M 上下文</li></ul></div>
+        <div class="content-card"><div class="card-icon">🚀</div><h4>极速响应</h4><p>实时交互、流式输出、高并发</p><ul><li><strong>DeepSeek V4 Flash</strong> — 低延迟流式</li><li><strong>Qwen3.5 Flash</strong> — 1M 上下文高速</li><li><strong>Step 3.5 Flash</strong> — MoE 110B</li></ul></div>
+        <div class="content-card"><div class="card-icon">🧠</div><h4>深度推理</h4><p>数学、逻辑、复杂分析</p><ul><li><strong>DeepSeek V4 Pro</strong> — 1M 上下文</li><li><strong>Kimi K3</strong> — 2.8T 参数</li><li><strong>Qwen3.8 Max</strong> — 顶尖推理</li></ul></div>
+        <div class="content-card"><div class="card-icon">🖼️</div><h4>多模态</h4><p>图片理解、视觉分析、OCR</p><ul><li><strong>Step 3.7 Flash</strong> — 原生多模态</li><li><strong>Kimi K2.5</strong> — 视觉编程</li><li><strong>MiniMax M3</strong> — 1M 上下文</li></ul></div>
+        <div class="content-card"><div class="card-icon">🔄</div><h4>混合策略</h4><p>多模型组合，各取所长</p><ul><li>日常 → V4 Flash / Qwen3.5 Flash</li><li>编码 → Qwen3.8 Max / Seed 2.1 Pro</li><li>深度研究 → Kimi K3 / V4 Pro</li></ul></div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB: Architecture ==================== -->
+    <div class="tab-content" id="tab-architecture">
+      <div class="hero-section"><div class="hero-badge">ARCHITECTURE</div><h1>DSH <span class="accent">架构原理</span></h1><p>理解 DSH 的设计哲学：一切皆插件。</p></div>
+      <div class="content-card"><div class="card-icon">🧩</div><h3>插件化架构</h3><p>DSH 的核心由 <strong>100+ 个插件</strong> 组成，每个插件只干一件事。模型接入、文件操作、命令执行、Web UI 都是插件。</p><ul><li><strong>dsh-llm-pi-ai</strong> — 模型 Provider 接口</li><li><strong>dsh-tool-bash</strong> — 终端命令执行</li><li><strong>dsh-tool-fs</strong> — 文件系统操作</li><li><strong>dsh-agent-loop</strong> — Agent 循环引擎</li></ul><p>你可以在 <code>~/.dsh/settings.yaml</code> 中配置所有插件的行为。</p></div>
+      <div class="content-card"><div class="card-icon">📋</div><h3>配置层次</h3><p>配置由三层叠加：Bundle 默认 → Profile 配置 → 用户配置（<code>~/.dsh/settings.yaml</code>）。用户配置优先级最高。</p></div>
+      <div class="content-card"><div class="card-icon">🔐</div><h3>凭据管理</h3><p>API Key 以只写方式存储在 <code>$DSH_HOME/.credentials.yaml</code>，Web UI 不回显。支持通过环境变量引用（推荐）。</p></div>
+    </div>
+
+    <!-- ==================== TAB: Plugins ==================== -->
+    <div class="tab-content" id="tab-plugins">
+      <div class="hero-section"><div class="hero-badge">PLUGINS</div><h1>DSH <span class="accent">插件生态</span>分析</h1><p>基于 GitHub 社区数据，7,400+ 插件仓库的全面分析。</p></div>
+      <div class="content-card">
+        <div class="card-icon">📊</div>
+        <h3>生态总览</h3>
+        <div class="grid-4" style="margin-top:12px">
+          <div style="padding:16px;background:var(--accent-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--accent)">7,400+</div><div style="font-size:11px;color:var(--ink-secondary)">dsh-plugin 仓库</div></div>
+          <div style="padding:16px;background:var(--blue-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--blue)">1,034</div><div style="font-size:11px;color:var(--ink-secondary)">兼容可用</div></div>
+          <div style="padding:16px;background:var(--green-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--green)">14</div><div style="font-size:11px;color:var(--ink-secondary)">分类</div></div>
+          <div style="padding:16px;background:var(--purple-soft);border-radius:var(--radius-xs);text-align:center"><div style="font-size:28px;font-weight:800;color:var(--purple)">88K+</div><div style="font-size:11px;color:var(--ink-secondary)">Top 1 ⭐</div></div>
         </div>
       </div>
-
-      <!-- ==================== TAB: Recommendation ==================== -->
-      <div class="tab-content" id="tab-recommendation">
-        <div class="workspace-head"><div><div class="step-label">Recommendation</div><h2>场景推荐与选型指南</h2></div><p>从 DSH 官方视角，分场景推荐最优模型组合</p></div>
-        <div class="workspace-body">
-          <div class="mode-learning">
-            <div class="grid-3">
-              <div class="rec-card"><div class="rec-card-icon">💰</div><h4>极致性价比</h4><p>日常对话、简单任务、批量处理</p><div class="rec-models"><div class="rec-model-item"><strong>DeepSeek V4 Flash</strong> — $0.50/M，Agent 均衡</div><div class="rec-model-item"><strong>Qwen3-30B-A3B</strong> — 3B 激活，极速</div><div class="rec-model-item"><strong>Ling 3.0 Flash</strong> — Agent 友好，价低质优</div></div></div>
-              <div class="rec-card"><div class="rec-card-icon">🤖</div><h4>Agent 任务首选</h4><p>多步推理、工具调用、代码生成</p><div class="rec-models"><div class="rec-model-item"><strong>DeepSeek V4 Flash</strong> — 官方推荐</div><div class="rec-model-item"><strong>Qwen3.8 Max</strong> — 2.4T MoE 旗舰</div><div class="rec-model-item"><strong>GLM 5.2</strong> — 1M 上下文，长链路稳定</div></div></div>
-              <div class="rec-card"><div class="rec-card-icon">🚀</div><h4>极速响应</h4><p>实时交互、流式输出、高并发</p><div class="rec-models"><div class="rec-model-item"><strong>DeepSeek V4 Flash</strong> — 低延迟流式</div><div class="rec-model-item"><strong>Qwen3.5 Flash</strong> — 1M 上下文 + 高速</div><div class="rec-model-item"><strong>Step 3.5 Flash</strong> — MoE 110B 激活</div></div></div>
-              <div class="rec-card"><div class="rec-card-icon">🧠</div><h4>深度推理</h4><p>数学、逻辑、复杂分析</p><div class="rec-models"><div class="rec-model-item"><strong>DeepSeek V4 Pro</strong> — 深度推理 1M 上下文</div><div class="rec-model-item"><strong>Kimi K3</strong> — 2.8T 参数</div><div class="rec-model-item"><strong>Qwen3.8 Max</strong> — 2.4T MoE 顶尖推理</div></div></div>
-              <div class="rec-card"><div class="rec-card-icon">🖼️</div><h4>多模态</h4><p>图片理解、视觉分析、OCR</p><div class="rec-models"><div class="rec-model-item"><strong>Step 3.7 Flash</strong> — 原生多模态 256K</div><div class="rec-model-item"><strong>Kimi K2.5</strong> — 视觉编程 + Agent</div><div class="rec-model-item"><strong>MiniMax M3</strong> — 多模态 1M 上下文</div></div></div>
-              <div class="rec-card"><div class="rec-card-icon">🔄</div><h4>混合策略</h4><p>多模型组合，各取所长</p><div class="rec-models"><div class="rec-model-item">日常 → V4 Flash / Qwen3.5 Flash</div><div class="rec-model-item">编码 → Qwen3.8 Max / Seed 2.1 Pro</div><div class="rec-model-item">深度研究 → Kimi K3 / V4 Pro</div></div></div>
-            </div>
-
-            <div class="highlight-box">
-              <div class="h-icon">🎯</div>
-              <h4>DSH 官方推荐：默认用 DeepSeek V4 Flash</h4>
-              <p>作为 DeepSeek 官方出品的 Agent 框架，DSH 与 DeepSeek V4 Flash 的组合是官方推荐的首选方案：</p>
-              <ul>
-                <li><strong>成本最优</strong> — $0.50/M tokens，闲时半价仅 $0.25/M</li>
-                <li><strong>Agent 能力均衡</strong> — 简单任务与 V4 Pro 旗鼓相当</li>
-                <li><strong>原生支持</strong> — DSH 对 DeepSeek 协议有原生优化</li>
-                <li><strong>1M 上下文</strong> — 百万 Token 超长上下文</li>
-              </ul>
-            </div>
-          </div>
-          <div class="mode-ref">
-            <div class="ref-section">
-              <div class="ref-section-title">场景模型速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">💰 性价比</span><span class="ref-val">DeepSeek V4 Flash <code>$0.50</code> · Qwen3-30B <code>$0.50</code></span></div>
-                <div class="ref-item"><span class="ref-key">🤖 Agent</span><span class="ref-val">DeepSeek V4 Flash · Qwen3.8 Max · GLM 5.2</span></div>
-                <div class="ref-item"><span class="ref-key">🚀 极速</span><span class="ref-val">DeepSeek V4 Flash · Qwen3.5 Flash · Step 3.5 Flash</span></div>
-                <div class="ref-item"><span class="ref-key">🧠 深度推理</span><span class="ref-val">DeepSeek V4 Pro · Kimi K3 · Qwen3.8 Max</span></div>
-                <div class="ref-item"><span class="ref-key">🖼️ 多模态</span><span class="ref-val">Step 3.7 Flash · Kimi K2.5 · MiniMax M3</span></div>
-                <div class="ref-item"><span class="ref-key">🎯 官方首选</span><span class="ref-val">DeepSeek V4 Flash — 默认推荐</span></div>
-              </div>
-            </div>
-          </div>
+      <div class="content-card">
+        <div class="card-icon">🔥</div>
+        <h3>热门插件 Top 10</h3>
+        <div class="pricing-wrap" style="margin-top:12px">
+          <table class="pricing-table">
+            <thead><tr><th>#</th><th>插件</th><th>⭐ Stars</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><span class="model-name">Open Design</span></td><td class="price-cell" style="color:var(--orange)">88,813</td><td>AI 设计引擎：原型、落地页、图片视频</td></tr>
+              <tr><td>2</td><td><span class="model-name">DSH Desktop</span></td><td class="price-cell" style="color:var(--orange)">13,483</td><td>现代化桌面端</td></tr>
+              <tr><td>3</td><td><span class="model-name">dsh-web-ui</span></td><td class="price-cell">4,540</td><td>Web UI 任务面板/皮肤中心</td></tr>
+              <tr><td>4</td><td><span class="model-name">dsh-TUI</span></td><td class="price-cell">1,959</td><td>全屏终端 UI</td></tr>
+              <tr><td>5</td><td><span class="model-name">DSH-better-sidebar</span></td><td class="price-cell">1,475</td><td>侧边栏工作台</td></tr>
+              <tr><td>6</td><td><span class="model-name">awesome-dsh-plugins</span></td><td class="price-cell">1,209</td><td>插件雷达：7600+ 候选实测</td></tr>
+              <tr><td>7</td><td><span class="model-name">dsh-vision-router</span></td><td class="price-cell">750</td><td>纯文本模型视觉增强</td></tr>
+              <tr><td>8</td><td><span class="model-name">dsh-agent-teams</span></td><td class="price-cell">542</td><td>多智能体团队协作</td></tr>
+              <tr><td>9</td><td><span class="model-name">DSH Desktop (Tauri)</span></td><td class="price-cell">525</td><td>5MB 桌面安装包</td></tr>
+              <tr><td>10</td><td><span class="model-name">dsh-at-file</span></td><td class="price-cell">372</td><td>@file 提及</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
+      <div class="content-card">
+        <div class="card-icon">📦</div>
+        <h3>安装命令</h3>
+        <div class="code-block"># 从 npm 安装
+dsh plugin --profile web add 插件包名
 
-      <!-- ==================== TAB: Architecture ==================== -->
-      <div class="tab-content" id="tab-architecture">
-        <div class="workspace-head"><div><div class="step-label">Architecture</div><h2>DSH 模型层架构</h2></div><p>理解 DSH 的模型接入层设计原理</p></div>
-        <div class="workspace-body">
-          <div class="mode-learning">
-            <div class="flow-stage"><div class="stage-label"><span>1</span><div><strong>插件化架构</strong><small>PLUGIN-BASED</small></div></div><div class="flow-content"><p>DSH 的模型能力由 <strong>dsh-llm-pi-ai</strong> 插件提供。PI = Provider Interface，统一模型接入接口。每个 Provider 定义 <code>baseURL</code>、<code>api</code>（协议）、<code>apiKeyEnv</code>（凭据环境变量），模型列表在 <code>models</code> 字段中声明。</p></div></div>
-            <div class="flow-stage"><div class="stage-label"><span>2</span><div><strong>配置层次</strong><small>CONFIG LAYERS</small></div></div><div class="flow-content"><p>DSH 配置由多层叠加而成：Bundle 默认 → Profile 配置 → 用户 <code>~/.dsh/settings.yaml</code>（最高优先级）。用户配置覆盖默认值，无需修改插件包。</p></div></div>
-            <div class="flow-stage"><div class="stage-label"><span>3</span><div><strong>凭据管理</strong><small>CREDENTIALS</small></div></div><div class="flow-content"><p>API Key 以只写方式存储在 <code>$DSH_HOME/.credentials.yaml</code>，Web UI 只显示遮盖版本。支持通过 <code>apiKeyEnv</code> 引用环境变量（推荐做法）。</p></div></div>
-            <div class="flow-stage"><div class="stage-label"><span>4</span><div><strong>请求生命周期</strong><small>REQUEST FLOW</small></div></div><div class="flow-content"><ul><li><strong>用户发送消息</strong> → Agent 循环决定调用 LLM</li><li><strong>Provider 选择</strong> → 根据会话模型定位 Provider 配置</li><li><strong>凭据注入</strong> → 从 credentials/环境变量读取 API Key</li><li><strong>API 调用</strong> → 按 baseURL/protocol 发送请求</li><li><strong>流式返回</strong> → SSE 流式输出，实时展示</li><li><strong>错误重试</strong> → dsh-llm-retry 插件自动处理</li></ul></div></div>
-          </div>
-          <div class="mode-ref">
-            <div class="ref-section">
-              <div class="ref-section-title">架构速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">模型插件</span><span class="ref-val"><code>dsh-llm-pi-ai</code> — Provider Interface</span></div>
-                <div class="ref-item"><span class="ref-key">配置位置</span><span class="ref-val"><code>~/.dsh/settings.yaml</code></span></div>
-                <div class="ref-item"><span class="ref-key">凭据位置</span><span class="ref-val"><code>$DSH_HOME/.credentials.yaml</code>（只写）</span></div>
-                <div class="ref-item"><span class="ref-key">环境变量</span><span class="ref-val"><code>apiKeyEnv</code> 引用，如 <code>TOKENDANCE_API_KEY</code></span></div>
-                <div class="ref-item"><span class="ref-key">重试机制</span><span class="ref-val"><code>dsh-llm-retry</code> 插件自动处理临时故障</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
+# 从 GitHub 安装
+dsh plugin add github:用户名/仓库名
+
+# 推荐先装
+dsh plugin --profile web add dsh-TUI
+dsh plugin --profile web add DSH-better-sidebar</div>
       </div>
+    </div>
 
-      <!-- ==================== TAB: Plugins ==================== -->
-      <div class="tab-content" id="tab-plugins">
-        <div class="workspace-head">
-          <div>
-            <div class="step-label">Plugins</div>
-            <h2>DSH 插件生态全景分析</h2>
-            <p>基于 GitHub 官方社区数据，全面解析 DSH 插件生态</p>
-          </div>
-          <div class="model-controls" style="align-self:flex-end">
-            <div class="model-switcher time-filter" role="tablist" aria-label="时间范围">
-              <button class="active" role="tab" aria-selected="true" data-period="daily">📅 日</button>
-              <button role="tab" aria-selected="false" data-period="weekly">📊 周</button>
-              <button role="tab" aria-selected="false" data-period="monthly">📈 月</button>
-            </div>
-          </div>
-        </div>
-        <div class="workspace-body">
-          <div class="mode-learning">
-            <!-- Overview Stats -->
-            <div class="flow-stage">
-              <div class="stage-label"><span>◉</span><div><strong>插件生态总览</strong><small>ECOSYSTEM OVERVIEW</small></div></div>
-              <div class="flow-content">
-                <p>截至 2026 年 8 月，DSH 社区已形成庞大的插件生态。以下数据来自 GitHub <code>dsh-plugin</code> 话题与社区兼容性雷达的交叉验证：</p>
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0">
-                  <div style="padding:16px;background:var(--accent-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div class="stat-repo-count" style="font-size:28px;font-weight:800;color:var(--accent)">7,400+</div>
-                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">dsh-plugin 话题仓库</div>
-                  </div>
-                  <div style="padding:16px;background:var(--blue-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div class="stat-available" style="font-size:28px;font-weight:800;color:var(--blue)">1,034</div>
-                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">兼容可用插件</div>
-                  </div>
-                  <div style="padding:16px;background:var(--green-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div class="stat-categories" style="font-size:28px;font-weight:800;color:var(--green)">14</div>
-                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">插件分类</div>
-                  </div>
-                  <div style="padding:16px;background:var(--purple-soft);border-radius:var(--radius-xs);text-align:center">
-                    <div class="stat-top-stars" style="font-size:28px;font-weight:800;color:var(--purple)">88,000+</div>
-                    <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">Top 1 插件 ⭐</div>
-                  </div>
-                </div>
-                <div class="time-period-info" style="font-size:12px;color:var(--ink-tertiary);margin-top:-8px">
-                  <span class="period-label">📅 当前视图：</span>
-                  <strong class="period-value">日数据</strong>
-                  <span class="period-detail"> — 最新快照</span>
-                </div>
-                <p><strong>生态健康度：</strong>在 1,810 个已定位的插件仓库中，<span style="color:var(--green);font-weight:600">1,034 个（57%）</span>经社区运行级实测为可用，388 个（21%）不兼容，其余为待定或未测。</p>
-              </div>
-            </div>
-
-            <!-- Top Plugins -->
-            <div class="flow-stage" style="margin-top:14px">
-              <div class="stage-label"><span>🔥</span><div><strong>社区热门插件 Top 15</strong><small>BY GITHUB STARS</small></div></div>
-              <div class="flow-content">
-                <div class="pricing-wrap" style="margin-top:10px">
-                  <table class="pricing-table">
-                    <thead><tr><th>#</th><th>插件</th><th>分类</th><th>⭐ Stars</th><th>说明</th></tr></thead>
-                    <tbody>
-                      <tr><td>1</td><td><span class="model-name"><a href="https://github.com/nexu-io/open-design" target="_blank" style="color:var(--ink)">Open Design</a></span></td><td>设计</td><td><span class="price-cell" style="color:var(--orange)">88,813</span></td><td>AI 设计引擎：原型、落地页、仪表盘、幻灯片、图片视频</td></tr>
-                      <tr><td>2</td><td><span class="model-name"><a href="https://github.com/anywhere-labs/deepseek-harness-desktop" target="_blank" style="color:var(--ink)">DSH Desktop</a></span></td><td>桌面端</td><td><span class="price-cell" style="color:var(--orange)">13,483</span></td><td>现代化桌面端解决方案，万物皆插件</td></tr>
-                      <tr><td>3</td><td><span class="model-name"><a href="https://github.com/zhu1090093659/dsh-web-ui" target="_blank" style="color:var(--ink)">dsh-web-ui</a></span></td><td>Web UI 增强</td><td><span class="price-cell">4,540</span></td><td>任务面板/Git 图/右侧面板/移动端/皮肤中心</td></tr>
-                      <tr><td>4</td><td><span class="model-name"><a href="https://github.com/edison7009/EchoBird" target="_blank" style="color:var(--ink)">EchoBird</a></span></td><td>启动器</td><td><span class="price-cell">3,075</span></td><td>一键安装多 Agent 框架</td></tr>
-                      <tr><td>5</td><td><span class="model-name"><a href="https://github.com/ccch1mneyyy/dsh-TUI" target="_blank" style="color:var(--ink)">dsh-TUI</a></span></td><td>终端 UI</td><td><span class="price-cell">1,959</span></td><td>Claude Code 风格全屏终端，鲸鱼顶栏/实时状态</td></tr>
-                      <tr><td>6</td><td><span class="model-name"><a href="https://github.com/omdsh-dev/DSH-better-sidebar" target="_blank" style="color:var(--ink)">DSH-better-sidebar</a></span></td><td>Web UI 增强</td><td><span class="price-cell">1,475</span></td><td>完整侧边栏工作台，支持三方拓展注册</td></tr>
-                      <tr><td>7</td><td><span class="model-name"><a href="https://github.com/AdamPlatin123/awesome-dsh-plugins" target="_blank" style="color:var(--ink)">awesome-dsh-plugins</a></span></td><td>插件雷达</td><td><span class="price-cell">1,209</span></td><td>DSH 插件雷达：7600+ 候选，运行级实测四档判定</td></tr>
-                      <tr><td>8</td><td><span class="model-name"><a href="https://github.com/ysr666/dsh-vision-router" target="_blank" style="color:var(--ink)">dsh-vision-router</a></span></td><td>视觉</td><td><span class="price-cell">750</span></td><td>纯文本模型的视觉增强：内置免费视觉链</td></tr>
-                      <tr><td>9</td><td><span class="model-name"><a href="https://github.com/hairyf/deepseek-harness-desktop" target="_blank" style="color:var(--ink)">DSH Desktop (Tauri)</a></span></td><td>桌面端</td><td><span class="price-cell">525</span></td><td>Tauri 桌面版，仅 5MB 安装包</td></tr>
-                      <tr><td>10</td><td><span class="model-name"><a href="https://github.com/NanmiCoder/dsh-agent-teams" target="_blank" style="color:var(--ink)">dsh-agent-teams</a></span></td><td>Agent 编排</td><td><span class="price-cell">542</span></td><td>多智能体团队协作</td></tr>
-                      <tr><td>11</td><td><span class="model-name"><a href="https://github.com/Ikalus1988/MisakaNet" target="_blank" style="color:var(--ink)">MisakaNet</a></span></td><td>知识库</td><td><span class="price-cell">405</span></td><td>零依赖、git 备份的微课库</td></tr>
-                      <tr><td>12</td><td><span class="model-name"><a href="https://github.com/omdsh-dev/dsh-at-file" target="_blank" style="color:var(--ink)">dsh-at-file</a></span></td><td>工具</td><td><span class="price-cell">372</span></td><td>Codex 风格 @file 提及</td></tr>
-                      <tr><td>13</td><td><span class="model-name"><a href="https://github.com/text2future/flowix" target="_blank" style="color:var(--ink)">Flowix</a></span></td><td>笔记</td><td><span class="price-cell">319</span></td><td>内置 DSH Agent 的笔记/记忆工具</td></tr>
-                      <tr><td>14</td><td><span class="model-name"><a href="https://github.com/bowenliang123/dsh-context" target="_blank" style="color:var(--ink)">dsh-context</a></span></td><td>上下文</td><td><span class="price-cell">312</span></td><td>上下文洞察面板，可视化上下文窗口</td></tr>
-                      <tr><td>15</td><td><span class="model-name"><a href="https://github.com/vibeinging/deepseek-harness-desktop-app" target="_blank" style="color:var(--ink)">dsh-work</a></span></td><td>桌面端</td><td><span class="price-cell">394</span></td><td>本地 AI 工作空间</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category Analysis -->
-            <div class="flow-stage" style="margin-top:14px">
-              <div class="stage-label"><span>📊</span><div><strong>插件分类分析</strong><small>14 CATEGORIES</small></div></div>
-              <div class="flow-content">
-                <p>社区将 DSH 插件生态划分为 <strong>14 个类别</strong>，覆盖了从工具到 AI 编排的完整能力链：</p>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🛠️ 工具 · 30 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· Git 工具（状态/diff/log/提交）</li><li>· 测试运行器（自动检测 vitest/jest/pytest）</li>
-                      <li>· 安全扫描（密钥/危险模式检测）</li><li>· 数据工具（CSV/JSON/正则/编码）</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🧩 技能包 · 16 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 工程纪律技能包</li><li>· 跨平台技能迁移（Claude/Codex/OpenCode）</li>
-                      <li>· 书籍转技能流水线</li><li>· 技能对比评测（forkprobe）</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🔌 MCP · 8 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· MCP 服务器管理</li><li>· 搜索 MCP（Tavily/Brave/Exa）</li>
-                      <li>· OAuth 2.1 MCP 客户端</li><li>· 视觉 MCP 服务器</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🎨 UI/皮肤/主题 · 43 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 皮肤系统（鲸鱼娘/像素/QQ2006/初音）</li><li>· 侧边栏工作台</li>
-                      <li>· 交互式 UI 组件（GenUI）</li><li>· 对话批注/导航栏/聚焦模式</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🖥️ 桌面/TUI/移动 · 22 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 终端 TUI（Claude Code 风格）</li><li>· 桌面端（Tauri/Electron/WPF）</li>
-                      <li>· 移动端客户端</li><li>· 社区发行版（oh-dsh）</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🤖 Agent 编排 · 10 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 多智能体团队（dsh-agent-teams）</li><li>· 跨会话消息传递</li>
-                      <li>· 跨实例事件互联</li><li>· 去中心化多设备舰队</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🧠 上下文/记忆 · 24 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 跨会话长期记忆</li><li>· 上下文压缩（ACP）</li>
-                      <li>· 上下文审计面板</li><li>· 会话回退（turn-rewind）</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">👁️ 多模态/视觉 · 17 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 视觉路由（纯文本模型可看图）</li><li>· OCR/截图/计算机视觉</li>
-                      <li>· 图片问答/标注</li><li>· 视频生成（鲸影 DSH Video Studio）</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🔁 工作流/自动化 · 21 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 深度研究/定时任务</li><li>· 条件唤醒/审查循环</li>
-                      <li>· 自进化科研工作流</li><li>· 测试环境同步/自动化</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">📡 通知/渠道 · 18 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· Telegram/微信/飞书机器人</li><li>· SSH 终端</li>
-                      <li>· 桌面通知/WebSocket 桥接</li><li>· B站动态发布</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🌐 浏览器/搜索 · 16 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 浏览器控制/网页抓取</li><li>· 搜索 Provider 替换</li>
-                      <li>· 私有化搜索方案</li><li>· 网页内容提取</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🏗️ 基础设施/管理 · 33 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 插件市场/管理器（20+ 个市场）</li><li>· 健康检查/安全审计</li>
-                      <li>· 多用户服务器部署</li><li>· 成本监控/Token 统计</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🎮 趣味/其他 · 31 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 游戏/宠物/贴纸</li><li>· 音乐播放器（BGM/网易云）</li>
-                      <li>· 股市行情面板</li><li>· 壁纸引擎/动态背景</li>
-                    </ul>
-                  </div>
-                  <div style="padding:14px;background:var(--bg-warm);border-radius:var(--radius-xs);border:1px solid rgba(0,0,0,0.04)">
-                    <strong style="font-size:13px;color:var(--ink)">🏛️ 官方/元 · 10 个</strong>
-                    <ul style="list-style:none;margin-top:6px;font-size:12px;color:var(--ink-secondary);line-height:1.8">
-                      <li>· 官方核心仓库</li><li>· 精选列表/社区评测</li>
-                      <li>· 兼容性雷达</li><li>· 插件商店/索引站</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Key Insights -->
-            <div class="flow-stage" style="margin-top:14px">
-              <div class="stage-label"><span>💡</span><div><strong>生态洞察与建议</strong><small>INSIGHTS</small></div></div>
-              <div class="flow-content">
-                <ul>
-                  <li><strong>安装插件</strong> — 使用 <code>dsh plugin --profile web add &lt;包名&gt;</code> 命令，或 <code>dsh plugin add github:用户名/仓库名</code> 直接从 GitHub 安装</li>
-                  <li><strong>推荐先装</strong> — <code>dsh-TUI</code>（终端 UI）、<code>DSH-better-sidebar</code>（侧边栏工作台）、<code>dsh-at-file</code>（@文件提及），三款插件显著提升日常体验</li>
-                  <li><strong>注意兼容性</strong> — 社区雷达显示约 21% 的插件在最新版 DSH 上不兼容，安装前查看仓库的 README 确认支持版本</li>
-                  <li><strong>安全提醒</strong> — 插件安装后即可访问你的工作区文件，建议从高星/活跃维护的仓库安装</li>
-                  <li><strong>开发自己的插件</strong> — 使用 <code>dshp-cli</code> 脚手架工具快速创建插件骨架</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="mode-ref">
-            <div class="ref-section">
-              <div class="ref-section-title">插件安装速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">安装命令</span><span class="ref-val"><code>dsh plugin --profile web add &lt;pkg&gt;</code></span></div>
-                <div class="ref-item"><span class="ref-key">GitHub 安装</span><span class="ref-val"><code>dsh plugin add github:用户/仓库</code></span></div>
-                <div class="ref-item"><span class="ref-key">热门推荐</span><span class="ref-val">dsh-TUI · DSH-better-sidebar · dsh-at-file · dsh-vision-router</span></div>
-                <div class="ref-item"><span class="ref-key">插件市场</span><span class="ref-val">dsh-market · dsh-plugin-marketplace · awesome-dsh-plugins</span></div>
-                <div class="ref-item"><span class="ref-key">生态总量</span><span class="ref-val">7,400+ 仓库 · 1,034 兼容可用 · 14 分类</span></div>
-                <div class="ref-item"><span class="ref-key">开发脚手架</span><span class="ref-val"><code>npx dshp-cli create my-plugin</code></span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ==================== TAB: Quickstart ==================== -->
-      <div class="tab-content" id="tab-quickstart">
-        <div class="workspace-head"><div><div class="step-label">Quick Start</div><h2>5 步快速配置模型环境</h2></div><p>从零开始，5 分钟配置好 DSH 模型环境</p></div>
-        <div class="workspace-body">
-          <div class="mode-learning">
-            <div class="qs-steps">
-              <div class="qs-step"><div class="qs-num">1</div><div class="qs-body"><h4>安装 DSH</h4><p>确保已安装 Node.js 18+，然后运行：</p><div class="code-block">npx @deepseek-ai/dsh web</div><p>或从源码安装：</p><div class="code-block">git clone https://github.com/deepseek-ai/deepseek-harness.git
-cd deepseek-harness
-pnpm install && pnpm run build && pnpm dsh web</div></div></div>
-              <div class="qs-step"><div class="qs-num">2</div><div class="qs-body"><h4>配置模型 Provider</h4><p>打开 Web UI 的 <strong>设置 → 模型</strong> 页面，添加 Provider：</p><div class="code-block"># 或直接编辑 ~/.dsh/settings.yaml
-llm-pi-ai:
-  providers:
-    my-gateway:
-      displayName: 我的网关
-      apiKeyEnv: MY_API_KEY
-      api: openai-completions
-      baseURL: https://your-gateway.com/v1
-      models:
-        - id: model-a
-        - id: model-b</div></div></div>
-              <div class="qs-step"><div class="qs-num">3</div><div class="qs-body"><h4>设置环境变量</h4><p>在终端中设置 API Key 环境变量（或通过 Web UI 保存）：</p><div class="code-block">export TOKENDANCE_API_KEY="your-key-here"
-# 建议写入 ~/.zshrc 或 ~/.bashrc 持久化</div></div></div>
-              <div class="qs-step"><div class="qs-num">4</div><div class="qs-body"><h4>选择工作区</h4><p>在 Web UI 中点击"选择工作区"，添加你的项目目录，选中它。只有选中工作区后才能发送任务。</p></div></div>
-              <div class="qs-step"><div class="qs-num">5</div><div class="qs-body"><h4>选择模型并开始</h4><p>新建会话，在模型选择器中选择你配置的模型。模型切换即时生效，无需重启服务器。</p><div class="code-block"># 常用 CLI 命令
-dsh web                          # 启动 Web UI
-dsh --profile headless "..."     # 无头模式
-dsh --profile web --dump-config  # 查看完整配置</div></div></div>
-            </div>
-          </div>
-          <div class="mode-ref">
-            <div class="ref-section">
-              <div class="ref-section-title">命令速查</div>
-              <div class="ref-grid">
-                <div class="ref-item"><span class="ref-key">启动 Web UI</span><span class="ref-val"><code>dsh web</code> 或 <code>npx @deepseek-ai/dsh web</code></span></div>
-                <div class="ref-item"><span class="ref-key">无头模式</span><span class="ref-val"><code>dsh --profile headless "任务"</code></span></div>
-                <div class="ref-item"><span class="ref-key">查看配置</span><span class="ref-val"><code>dsh --profile web --dump-config</code></span></div>
-                <div class="ref-item"><span class="ref-key">管理插件</span><span class="ref-val"><code>dsh plugin --profile web &lt;args&gt;</code></span></div>
-                <div class="ref-item"><span class="ref-key">配置文件</span><span class="ref-val"><code>~/.dsh/settings.yaml</code></span></div>
-                <div class="ref-item"><span class="ref-key">凭据文件</span><span class="ref-val"><code>$DSH_HOME/.credentials.yaml</code></span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="workspace-footer">
-        <p>DeepSeek Harness Model Atlas · GrowthOS 学习材料 · v0.1.0-rc.6</p>
-        <p>
-          <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank">GitHub</a>
-          · <a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/README.zh.md" target="_blank">文档</a>
-          · <a href="https://start.growthos.cn" target="_blank">GrowthOS</a>
-        </p>
-      </div>
-    </section>
+    <div class="workspace-footer">
+      <p>DSH 完全指南 · GrowthOS 学习材料 · 基于 DSH v0.1.0-rc.6</p>
+      <p><a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank">GitHub</a> · <a href="https://start.growthos.cn" target="_blank">GrowthOS</a></p>
+    </div>
   </main>
 </div>
 </div>
 
 <script>
-// ========== Sidebar Navigation ==========
+// Sidebar
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navItems = document.querySelectorAll('.sidebar-item');
 const tabContents = document.querySelectorAll('.tab-content');
 const breadcrumbTab = document.getElementById('breadcrumbTab');
-const pageTitle = document.getElementById('pageTitle');
-const pageDesc = document.getElementById('pageDesc');
 const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
 
-// Sidebar collapse toggle
 let sidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-if(sidebarCollapsed) {
-  sidebar.setAttribute('data-collapsed', 'true');
-  sidebarToggle.textContent = '▶';
-} else {
-  sidebar.setAttribute('data-collapsed', 'false');
-  sidebarToggle.textContent = '◀';
-}
+if(sidebarCollapsed) { sidebar.setAttribute('data-collapsed', 'true'); sidebarToggle.textContent = '▶'; }
+else { sidebar.setAttribute('data-collapsed', 'false'); sidebarToggle.textContent = '◀'; }
+
+sidebarToggle.addEventListener('click', () => {
+  const collapsed = sidebar.getAttribute('data-collapsed') === 'true';
+  sidebar.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+  localStorage.setItem('sidebar-collapsed', collapsed ? 'false' : 'true');
+  sidebarToggle.textContent = collapsed ? '◀' : '▶';
+});
+
+mobileMenuBtn.addEventListener('click', () => { sidebar.setAttribute('data-collapsed', 'false'); sidebarOverlay.style.display = 'block'; });
+sidebarOverlay.addEventListener('click', () => { sidebar.setAttribute('data-collapsed', 'true'); sidebarOverlay.style.display = 'none'; });
 
 const tabMeta = {
-  overview: { title: 'DSH Model Atlas', desc: '全面了解 DSH 可接入的 40+ 模型、6 种 Provider 接入方式、费用排名与场景推荐。', bread: '全景概览' },
-  providers: { title: 'Provider 接入方式', desc: '6 种模型接入方式详解，从内置 Provider 到自定义网关。', bread: 'Provider 接入' },
-  pricing: { title: '模型费用排名', desc: '23 款主流模型按每百万 Token 价格排序，从 $0.50 到 $150 全面对比。', bread: '费用排名' },
-  recommendation: { title: '场景推荐与选型', desc: '6 大场景的模型推荐方案，DSH 官方首选 DeepSeek V4 Flash。', bread: '场景推荐' },
-  architecture: { title: '模型层架构', desc: 'DSH 的模型接入层设计原理：插件化、配置层次、凭据管理。', bread: '架构原理' },
-  plugins: { title: '插件生态分析', desc: '基于 GitHub 社区数据的 DSH 插件全景分析：7,400+ 仓库、14 分类、热门推荐与安装指南。', bread: '插件生态' },
-  quickstart: { title: '快速上手', desc: '5 步从零配置 DSH 模型环境，5 分钟上手。', bread: '快速上手' }
+  quickstart: { title: '快速上手', desc: '5 分钟快速部署 DSH，新手友好保姆级教程', bread: '快速上手' },
+  overview: { title: 'DSH 是什么', desc: 'DeepSeek Harness 全景概览：是什么、能做什么、为什么选择它', bread: '全景概览' },
+  cases: { title: '五大实战案例', desc: '从代码审查到多 Agent 协作，5 个实战案例保姆级教学', bread: '五大实战案例' },
+  mobile: { title: '手机部署指南', desc: '把 DSH 装到手机上，让 AI 在口袋也能工作', bread: '手机部署' },
+  'token-save': { title: 'Token 省钱攻略', desc: '4 大策略用最少的 Token 获取最大智能', bread: 'Token 省钱' },
+  providers: { title: '模型接入方式', desc: '6 种模型接入方式全解析', bread: '模型接入' },
+  pricing: { title: '费用排名', desc: '23 款模型价格从 $0.50 到 $150 全面对比', bread: '费用排名' },
+  recommendation: { title: '场景推荐', desc: '6 大场景模型选型推荐', bread: '场景推荐' },
+  architecture: { title: '架构原理', desc: 'DSH 插件化架构设计原理', bread: '架构原理' },
+  plugins: { title: '插件生态', desc: '7,400+ 插件仓库、14 分类、热门推荐', bread: '插件生态' }
 };
 
 navItems.forEach(item => {
@@ -967,113 +467,24 @@ navItems.forEach(item => {
     navItems.forEach(n => n.classList.remove('active'));
     item.classList.add('active');
     const tab = item.dataset.tab;
-    tabContents.forEach(tc => tc.classList.remove('active'));
+    tabContents.forEach(tc => tc.style.display = 'none');
     const target = document.getElementById('tab-' + tab);
-    if(target) target.classList.add('active');
+    if(target) target.style.display = 'block';
     const meta = tabMeta[tab];
     if(meta) {
-      pageTitle.textContent = meta.title;
-      pageDesc.textContent = meta.desc;
+      breadcrumbCurrent.textContent = meta.title;
       breadcrumbTab.textContent = '· ' + meta.bread;
+      document.title = meta.title + ' · DSH 完全指南 · GrowthOS';
     }
-    // Close sidebar on mobile
-    if(window.innerWidth <= 760) {
-      sidebar.setAttribute('data-collapsed', 'true');
-      document.getElementById('sidebarOverlay').style.display = 'none';
-    }
+    if(window.innerWidth <= 760) { sidebar.setAttribute('data-collapsed', 'true'); sidebarOverlay.style.display = 'none'; }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
-// ========== Sidebar Collapse ==========
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-
-sidebarToggle.addEventListener('click', () => {
-  const collapsed = sidebar.getAttribute('data-collapsed') === 'true';
-  sidebar.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
-  localStorage.setItem('sidebar-collapsed', collapsed ? 'false' : 'true');
-  sidebarToggle.textContent = collapsed ? '◀' : '▶';
-  if(!collapsed && window.innerWidth <= 760) {
-    sidebarOverlay.style.display = 'none';
-  }
-});
-
-// Mobile menu button
-mobileMenuBtn.addEventListener('click', () => {
-  sidebar.setAttribute('data-collapsed', 'false');
-  sidebarOverlay.style.display = 'block';
-});
-
-// Overlay click to close sidebar
-sidebarOverlay.addEventListener('click', () => {
-  sidebar.setAttribute('data-collapsed', 'true');
-  sidebarOverlay.style.display = 'none';
-});
-
-// ========== Theme Toggle ==========
+// Theme
 const themeBtn = document.getElementById('themeBtn');
 if(localStorage.getItem('dsh-theme') === 'dark') document.body.classList.add('dark');
-themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  localStorage.setItem('dsh-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-});
-
-// ========== View Mode Switcher ==========
-const viewBtns = document.querySelectorAll('.model-switcher:not(.time-filter) button');
-viewBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    viewBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-    document.body.setAttribute('data-view', btn.dataset.view);
-  });
-});
-
-// ========== Plugin Data & Time Filter ==========
-// Embedded plugin data from collector
-const PLUGIN_DATA = {
-  daily: { totalRepos: 7400, available: 1034, categories: 14, topStars: 88822, topName: 'Open Design', date: '2026-08-18' },
-  weekly: { totalRepos: 7350, available: 1020, categories: 14, topStars: 88600, topName: 'Open Design', startDate: '2026-08-12', endDate: '2026-08-18', avgGrowth: 85 },
-  monthly: { totalRepos: 7200, available: 990, categories: 14, topStars: 88000, topName: 'Open Design', startDate: '2026-07-19', endDate: '2026-08-18', growth: 200 }
-};
-
-// Time filter switcher
-const timeBtns = document.querySelectorAll('.time-filter button');
-const statRepoCount = document.querySelector('.stat-repo-count');
-const statAvailable = document.querySelector('.stat-available');
-const statCategories = document.querySelector('.stat-categories');
-const statTopStars = document.querySelector('.stat-top-stars');
-const periodLabel = document.querySelector('.period-value');
-const periodDetail = document.querySelector('.period-detail');
-
-function updatePluginStats(period) {
-  const data = PLUGIN_DATA[period];
-  if (!data) return;
-  
-  statRepoCount.textContent = data.totalRepos.toLocaleString() + '+';
-  statAvailable.textContent = data.available.toLocaleString();
-  statCategories.textContent = data.categories;
-  statTopStars.textContent = data.topStars.toLocaleString() + '+';
-  
-  const labels = { daily: '日数据', weekly: '周数据', monthly: '月数据' };
-  const details = {
-    daily: `最新快照：${data.date}`,
-    weekly: `${data.startDate} ~ ${data.endDate} · 周均增长 ${data.avgGrowth}`,
-    monthly: `${data.startDate} ~ ${data.endDate} · 月增长 ${data.growth}`
-  };
-  
-  periodLabel.textContent = labels[period];
-  periodDetail.textContent = ' — ' + details[period];
-}
-
-timeBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    timeBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-    updatePluginStats(btn.dataset.period);
-  });
-});
+themeBtn.addEventListener('click', () => { document.body.classList.toggle('dark'); localStorage.setItem('dsh-theme', document.body.classList.contains('dark') ? 'dark' : 'light'); });
 </script>
 </body>
 </html>
